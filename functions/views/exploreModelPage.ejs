@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>AjnaSuite - Explore Model</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+	<!-- BootStrap 4 CDN -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- FontAwesome 5 CDN -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/v4-shims.css">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+	<!-- Google Material Design, Font CDN -->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+	<!-- Custom Controllers -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r123/three.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/three-freeform-controls@0.1.12/dist/three-freeform-controls.umd.js"></script>
+
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="/css/main.css" />
+	<link rel="stylesheet" href="/sweetalert2/sweetalert2.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.min.js"
+		integrity="sha512-n8IpKWzDnBOcBhRlHirMZOUvEq2bLRMuJGjuVqbzUJwtTsgwOgK5aS0c1JA647XWYfqvXve8k3PtZdzpipFjgg=="
+		crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+	<script src="https://unpkg.com/three@0.126.1/examples/js/controls/TransformControls.js"></script>
+
+</head>
+
+<body>
+	<!-- divs for setting views of local and remote streams  -->
+	<div id="overlay" style="display: none;">
+		<div class="main">
+			<div class="main-content upper-navbar">
+				<div class="container-fluid">
+					<div class="row fullwidthRow" id="overlayRow1">
+						<div class="col-md-2">
+							<button id="logout" class="btn btn-circle btn-md btn_logout"><img src="/images/Exit.png"
+									alt="logout" style="width: 2em;"></button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- div for overlaying ui/ux elements -->
+	<div id="info" class="h-100">
+
+		<!-- Model load Bar -->
+		<div class="d-flex justify-content-center pt-2" style="height: 12.5%;">
+			<div id="model_load_bar_container" class="progress align-self-start"
+				style="width: 20%;display: none; margin-top: 20%; margin-left: 43%;">
+				<div id="model_load_bar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+					<span id="model_load_bar_percent"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row" id="tempDiv" style="margin-bottom: 55px; display: none;">
+		<div class="col-md-1" style="float: left;">
+			<div class="panel writing-elements">
+				<div class="panel-body" style="padding: 0px;">
+					<div>
+						<img id="t" src="/images/Position.png" alt="transform"
+							style="width: 2.3em; margin-left: 15px; margin-bottom: 15px; margin-top: 25px; cursor: pointer; border-radius: 5px;">
+					</div>
+					<div>
+						<img id="r" src="/images/Rotation.png" alt="rotate"
+							style="width: 2.3em; margin-left: 15px; margin-bottom: 15px; cursor: pointer; border-radius: 5px;">
+					</div>
+					<div>
+						<img id="s" src="/images/Scale.png" alt="scale"
+							style="width: 2.3em; margin-left: 15px; margin-bottom: 15px; cursor: pointer; border-radius: 5px;">
+					</div>
+					<div>
+						<img id="disperseBtn" src="/images/disperse.png" alt="disperse"
+							style="width: 2.3em; margin-left: 15px; margin-bottom: 15px; cursor: pointer; border-radius: 5px; display: none;">
+					</div>
+					<div>
+						<img id="restoreBtn" src="/images/restore.png" alt="restore"
+							style="width: 2.3em; margin-left: 15px; margin-bottom: 15px; cursor: pointer; border-radius: 5px; display: none;">
+					</div>
+					<div>
+						<img id="selectParentBtn" src="/images/level_up.png" alt="Select Parent"
+							style="width: 2.3em; margin-left: 15px; margin-bottom: 15px; cursor: pointer; border-radius: 5px; display: none;">
+					</div>
+					<div>
+						<img id="next" data-toggle2="tooltip" data-placement="right" data-container="body"
+							title="Next Page" src="/images/rightArrow.png" alt="nextPage"
+							style="width: 2.1em; margin-left: 15px; margin-bottom: 15px; cursor: pointer; display: none;">
+					</div>
+					<div>
+						<img id="previous" data-toggle2="tooltip" data-placement="right" data-container="body"
+							title="Prev Page" src="/images/leftArrow.png" alt="prevPage"
+							style="width: 2.1em; margin-left: 15px; margin-bottom: 15px; cursor: pointer; display: none;">
+					</div>
+					<div>
+						<img id="play" data-toggle2="tooltip" data-placement="right" data-container="body"
+							title="Play Video" src="/images/play.png" alt="play"
+							style="width: auto; margin-left: 13px; margin-bottom: 15px; cursor: pointer; display: none;">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Firbase CDNs and Cookie -->
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-storage.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+	<script src="../js/firebase-config.js"></script>
+
+	<script src="https://smtpjs.com/v3/smtp.js"></script>
+
+	<!-- JQuery & Bootstrap Dependency -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<script src="/js/common.js"></script>
+	<script>
+
+		$(document).ready(function () {
+            
+			toastr.options = {
+				"timeOut": "1000"
+			};
+
+			$('[data-toggle2="tooltip"]').tooltip({ boundary: 'window' });
+		});
+
+	</script>
+	<script src="/sweetalert2/sweetalert2.js"></script>
+
+	<!-- Main Script for ThreeJS operations -->
+	<script src="/js/exploreScript.js"></script>
+
+</body>
+
+</html>

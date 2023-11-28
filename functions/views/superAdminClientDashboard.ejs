@@ -1,0 +1,168 @@
+<!--- Modified code --->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Dashboard</title>
+	<link rel="stylesheet" href="/css/superAdminClientDashboard.css" />
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+		integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+</head>
+
+<body>
+	<div id="body">
+		<div class="overlay">
+			<div style="position: relative" class="">
+				<ul id="slide-out" class="sidenav sidenav-fixed">
+					<li class="logo">
+						<a class="navbar-brand" href="#">
+							<img src="/images/Group 245.svg" alt="" />
+						</a>
+					</li>
+					<li style="height: 5%"></li>
+
+					<li>
+						<a class="waves-effect waves-teal flex" href="/super-admin-dashboard">
+							<div class="flex-sidenav">
+								<div class="sidenav-icon">
+									<i class="fa fas fa-solid fa-user-tie" style="color: #787FF6; padding:5px;"></i>
+								</div>
+								<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px;">Dashboard</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="waves-effect waves-teal flex" href="/sales-admins">
+							<div class="flex-sidenav">
+								<div class="sidenav-icon">
+									<img class="sidenav-icon-img" src="/images/Vector (1).svg" />
+								</div>
+								<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px;">Sales Admin</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="waves-effect waves-teal flex checked" href="/clients">
+							<div class="flex-sidenav">
+								<div class="sidenav-icon">
+									<img class="sidenav-icon-img" src="/images/Vector.svg" />
+								</div>
+								<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px;">Clients</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="waves-effect waves-teal flex" href="/dashboard">
+							<div class="flex-sidenav">
+								<div class="sidenav-icon">
+									<img class="sidenav-icon-img" src="/images/HomeActive.png" />
+								</div>
+								
+								<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px;"> Home</div>
+							</div>
+						</a>
+					</li>
+					<a class="logout-btn" href="/logout">
+						<div class="logout-btn2" style="position: relative; top: 300px; right: 10px;">
+							<div class="sidenav-icon">
+								<img class="logoutimage" style="position: relative; right: 40px; top: 28px;"  src="/images/logout.png"  />
+							</div>
+							<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px; color: black;">Logout</div>
+						</div>
+					</a>
+					<!-- 
+					<li>
+						<a class="waves-effect waves-teal flex" href="/clients">
+							<div class="flex-sidenav">
+								<div class="sidenav-icon">
+									<img class="sidenav-icon-img" src="/images/Path 229.svg" />
+								</div>
+								<div class="sidenav-text">Settings</div>
+							</div>
+						</a>
+					</li>
+					-->
+				</ul>
+			</div>
+			<div class="body">
+				<nav class="navbar">
+					<div class="container-fluid evenly">
+						<div class="component waves-effect acc" style="margin-right: 30px">
+							<div class="flex account">
+								<img src="/images/Vectorz.svg" class="logo-acc" />
+								<div class="name-postion-tag flex">
+									<div class="name">Super Admin</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</nav>
+				<div class="sales-admin">
+					<div class="sales-admin-header flex">
+						<div class="sales-header-text">Clients</div>
+						<div class="nav-wrapper" style="width: 40%">
+							<form>
+								<div class="input-field" style="width: 100%" >
+									<input id="search1" style="width: 100%" type="search" 
+										placeholder="Search by date & name" />
+									<label class="label-icon" for="search1">
+										<i class="material-icons" style="position: relative; left: 10px;">search</i>
+									</label>									
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="sales-admin-body">
+						<table id="clientsTable">
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Name</th>
+									<th>Sales Person</th>
+									<th>Cost</th>
+									<th>Storage</th>
+									<th>Seats</th>
+								</tr>
+							</thead>
+
+							<tbody id="clientTableBody">
+							</tbody>
+						</table>
+						<!-- <ul class="pagination">
+							<li class="disabled">
+								<a href="#!"><i class="material-icons">chevron_left</i></a>
+							</li>
+							<li class="waves-effect"><a href="#!">1</a></li>
+							<li class="waves-effect">/</li>
+							<li class="waves-effect"><a href="#!">5</a></li>
+							<li class="waves-effect">
+								<a href="#!"><i class="material-icons">chevron_right</i></a>
+							</li>
+						</ul> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+		integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-storage.js"></script>
+
+	<script src="./js/firebase-config.js"></script>
+	<script src="/sweetalert2/sweetalert2.js"></script>
+	<script src="/js/superAdminClientDashboard.js"></script>
+</body>
+
+</html>

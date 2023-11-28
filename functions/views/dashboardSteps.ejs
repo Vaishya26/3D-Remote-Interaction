@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>AjnaStep Dashboard</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<%- include('styleScripts.ejs') %>
+	
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="/css/stepDashboard.css" />
+	<link rel="stylesheet" href="../sweetalert2/sweetalert2.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+	<style></style>
+
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+			<div class="col-md-4">
+				<div class="col_div" id="backButton">
+					<i class="fas fa-2x fa-chevron-left"></i>
+				</div>
+				<div class="col_div">
+					<div class="inside_col_div">
+						Edit
+					</div>
+					<div class="inside_col_div">
+						Preview
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4" style="text-align: center;">
+				<span id="projectName"></span>
+			<div id="model_load_bar_container" class="progress align-self-start" style="width: 100%; display: none;">
+					<div id="model_load_bar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"><span id="model_load_bar_percent"></span></div>
+			</div>
+			</div>
+			<div class="col-md-4" id="navbarRightIcons" style="text-align: right;">
+				<img src="../images/user2.png" id="user_img" class="img-responsive img-circle" alt="Avatar" height="45px"
+					width="45px">
+				<div id="qrCode"><i class="fas fa-2x fa-qrcode"></i></div>
+				<div id="downloadJson"><i class="fas fa-2x fa-download"></i></i></div>
+				<div id="output" style="display: none;"></div>
+			</div>
+		</nav>
+
+		<!-- LEFT SIDEBAR -->
+		<div id="sidebar-nav" class="sidebar">
+			<div class="row">
+				<div class="col-md-12" id="StepsHeading">Steps</div>
+			</div>
+			<nav>
+				<ul class="nav" id="steps-lists">
+
+				</ul>
+			</nav>
+		</div>
+		<!-- END LEFT SIDEBAR -->
+
+		<div class="main">
+			<div class="main-content">
+				<div id="middleDiv">
+					<div id="StepsArea">
+						<div class="col-md-12">
+							<p id="step-num-p">Step <span id="stepNum">1</span></p>
+						</div>
+						<!-- <div class="btn stepsBtn" id="leftArrow">
+							<i class="fas fa-2x fa-chevron-left"></i>
+						</div> -->
+						<div class="btn stepsBtn" id="addStep" style="display: none;">
+							<i class="fas fa-2x fa-plus"></i>
+						</div>
+						<div id="stepsMainDiv">
+							<textarea name="stepsH" placeholder="Step Heading" id="stepsHeading" cols="25"
+								rows="1"></textarea><br>
+							<textarea name="stepsD" placeholder="Steps" id="stepsDescription" cols="40"
+								rows="5"></textarea>
+						</div>
+
+					</div>
+					<div id="assetsArea">
+						<div class="col-md-12">
+							<p>Main Model</p>
+						</div>
+						<div class="row attached-asset-row MainModelRow">
+							<!-- <div class="ModelAsset">
+								<babylon id="babylon-viewer1" model="https://models.babylonjs.com/boombox.glb"></babylon>
+							</div>
+							<script src="https://preview.babylonjs.com/viewer/babylon.viewer.js"></script> -->
+						</div>
+						<br>
+						<div class="col-md-12">
+							<p>Assets</p>
+						</div>
+						<div class="row attached-asset-row VideoAssetRow">
+						</div>
+						<div class="row attached-asset-row ModelAssetRow">
+						</div>
+						<div class="row attached-asset-row ImageAssetRow">
+						</div>
+						<div class="row attached-asset-row AudioAssetRow">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- RIGHT SIDEBAR -->
+			<div id="sidebar-right" class="right-sidebar">
+				<div class="row">
+					<div class="col-md-12" id="library-heading">Library</div>
+				</div>
+				<div class="row tab-row">
+					<div id="yoursDiv" class="col-md-6 text-center tab active-tab">Yours</div>
+					<div id="cloudDiv" class="col-md-6 text-center tab">Cloud</div>
+				</div>
+				<div class="row libraryElementsRow">
+					<ul class="list-unstyled list-widget-vertical" id="yourAssetList">
+					</ul>
+					<ul class="list-unstyled list-widget-vertical" id="cloudAssetList">
+					</ul>
+				</div>
+			</div>
+			<!-- END RIGHT SIDEBAR -->
+		</div>
+	</div>
+
+	<!-- Screenshot Modal -->
+	<div class="modal fade" id="openAttachmentModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row" style="text-align: center; display: none;" id="model-preview-div">
+							<div id="model-preview">
+							</div>
+						</div>
+						<div class="row" style="text-align: center;">
+							<div class="col-md-6"><button type="button" id="confirmModelUpload" class="btn model-preview-btn">Confirm</button></div>
+							<div class="col-md-6"><button type="button" id="cancelModelUpload" class="btn model-preview-btn">Cancel</button></div>
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="/js/common.js"></script>
+	<script>
+		
+		<% if (projName != null) { %>
+			window.projName = '<%= projName %>';
+			// alert("Entered Project " + projName);
+		<% } %>
+			console.log('Opening Project ' + projName);
+		console.log(window.location.pathname);
+	</script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-storage.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+	<script src="../js/firebase-config.js"></script>
+	<script src="https://preview.babylonjs.com/viewer/babylon.viewer.js"></script>
+	<!-- JQuery & Bootstrap Dependency -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<script src="../js/jquery.qrcode.min.js"></script>
+	<script src="../sweetalert2/sweetalert2.js"></script>
+
+	<script src="/js/dashboardStepsScript.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Login</title>
+
+	<!-- BootStrap 4 CDN -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/sweetalert2/sweetalert2.css" />
+	<link rel="stylesheet" href="/css/loginCss.css">
+</head>
+
+<body>
+	<div class="wrapper">
+		<!-- <div id="companylogodiv">
+			<img id="companylogo" height="100px" src="./images/AjnaLens Logo_Colored.png" alt="AjnaLens">
+		</div> -->
+		<div class="main">
+			<div class="bg-images">
+				<div class="images">
+					<div class="img">
+						<div class="image"></div>
+					</div>
+					<div class="img">
+						<div class="image"></div>
+					</div>
+					<div class="img">
+						<div class="image"></div>
+					</div>
+					<div class="img">
+						<div class="image"></div>
+					</div>
+				</div>
+			</div>
+			<div class="main-content">
+
+				<!-- <div class="row">
+					<div class="col-md-12" style="text-align: center;">
+						<img id="ajnalogo" src="./images/AjnaSuite_Logo_Main.png" alt="AjnaSuite" />
+					</div>
+				</div> -->
+				<div class="typography">Connecting Minds, Creating Future</div>
+				<!-- Login form -->
+				<div class="mt-5 pt-5">
+					<div class="container-fluid">
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<input class="form-control signin-inp" type="email" placeholder="Email" name="text"
+									id="userEmail" autocomplete="off" spellcheck="false" required="required">
+							</div>
+						</div><br>
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<input class="form-control signin-inp" type="password" placeholder="Password"
+									name="text" id="userPassword" autocomplete="off" spellcheck="false"
+									required="required">
+							</div>
+						</div>
+					</div>
+					<button id="LoginBtn" type="button" class="mt-4 ml-5 pl-5 pr-5 btn btn-primary homepageBtn">Sign
+						In</button>
+				</div>
+				<!-- Google authentication -->
+				<!-- <div class="row" id="gauth-div">
+					<div class="col-md-12">
+						<div class="d-flex justify-content-center">
+							<a class="btn" id="googleLoginBtn" href="#" onclick="googleAuth(); return false;"
+								role="button" style="text-transform:none">
+								<img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in"
+									src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+								<b>Continue with Google</b>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="row login-label">
+					<div class="col-md-12">
+						<div class="d-flex justify-content-center">
+							----- or -----
+						</div>
+					</div>
+				</div> -->
+				<!-- Button which opens the modal for login -->
+				<!-- <div class="row login-label">
+					<div class="col-md-12">
+						<div class="d-flex justify-content-center">
+							<a href="#" data-toggle="modal" data-target="#modalSignIn"><b>Use your email</b></a>
+						</div>
+					</div>
+				</div> -->
+				<!-- Sign Up feature -->
+				<div class="row registerLabel">
+					<div class="col-md-12">
+						<div class="d-flex justify-content-center">
+							<span>I'm new here. &nbsp;</span><a href="/register"><b>Sign Up</b></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- signinUserModal -->
+	<div class="modal fade" id="modalSignIn" tabindex="-1" role="dialog" aria-labelledby="signinModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content signinUserModal">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalCreateTitle">Sign In</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<input class="form-control signin-inp" type="email" placeholder="Email" name="text"
+									id="userEmail" autocomplete="off" spellcheck="false" required="required">
+							</div>
+						</div><br>
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<input class="form-control signin-inp" type="password" placeholder="Password"
+									name="text" id="userPassword" autocomplete="off" spellcheck="false"
+									required="required">
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button id="LoginBtn" type="button" class="btn btn-primary homepageBtn">Sign In</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- JQuery & Bootstrap Dependency -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!-- firebase cdns -->
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-firestore.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc"></script>
+	<script src="/js/firebase-config.js"></script>
+	<script src="/js/common.js"></script>
+	<script src="/sweetalert2/sweetalert2.js"></script>
+	<script src="/js/loginScript.js"></script>
+
+
+	<!-- BootStrap 4 JS Dependencies -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+.form-horizontal.label-left .control-label {
+    text-align: left;
+}
+
+.panel .panel-heading, .panel .panel-body, .panel .panel-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.control-label {
+    color: #a0aeba;
+    font-weight: normal;
+}
+
+.form-horizontal.label-left .control-label {
+    text-align: left;
+}
+
+.form-control {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    border-color: #e1e3ea;
+    background-color: #fcfcfc;
+    color: #5e6773;
+}
+
+.form-control:focus {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-color: #c9cdd9;
+    background-color: #fff;
+}
+
+.input-group .form-control, .input-group-addon, .input-group-btn {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.form-horizontal .form-group {
+    margin-right: -15px;
+    margin-left: -15px
+}
+
+.publish-btn {
+    background-image: linear-gradient(#5160FF, #0017FF);
+	color: white;
+}

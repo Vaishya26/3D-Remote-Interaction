@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+    <link rel="stylesheet" href="/css/salesAdminMainDashboard.css" />
+</head>
+
+<body>
+    <div id="body">
+        <div class="overlay">
+            <div class="body">
+                <nav class="navbar">
+                    <div class="container-fluid evenly">
+                        <div class="flex account">
+                            <a class="navbar-brand" href="/dashboard">
+                                <img id="AjnaSuiteLogo" src="/images/Group 245.svg" alt="" />
+                            </a>
+                        </div>
+                        <div class="component waves-effect acc" style="margin-right: 30px">
+                            <div class="flex account">
+                                <img src="/images/Vectorz.svg" class="logo-acc" />
+                                <div class="name-postion-tag flex">
+                                    <div class="name">Sales Admin</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <div class="sales-admin">
+                    <div class="sales-admin-header flex">
+                        <div class="sales-header-text">Clients</div>
+                        <div class="nav-wrapper" style="width: 40%">
+                            <div class="row">
+                                <div class="col s6">
+                                    <form>
+                                        <div class="input-field" style="width: 100%">
+                                            <input id="search1" style="width: 100%" type="search"
+                                                placeholder="Search by date & Oraganization name" />
+                                            <label class="label-icon" for="search1">
+                                                <i class="material-icons">search</i>
+                                            </label>
+                                            <i class="material-icons">close</i>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col s6">
+                                    <div>
+                                        <a id="addClientRequest" href="javascript:void(0);"
+                                            class="waves-effect waves-green btn-flat" style="position: relative; left: 90px;">Add New
+                                            Client</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sales-admin-body">
+                        <table id="clientsTable">
+                            <thead>
+                                <tr>
+                                    <th style="font-size: 16px;">Date</th>
+                                    <th style="font-size: 16px">Name</th>
+                                    <th style="font-size: 16px">Cost</th>
+                                    <th style="font-size: 16px" >Storage</th>
+                                    <th style="font-size: 16px" >Seats</th>
+                                    <th style="font-size: 16px" >Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="clientTableBody">
+                            </tbody>
+                        </table>
+                        <ul class="pagination">
+                            <li class="disabled">
+                                <a href="#!"><i class="material-icons">chevron_left</i></a>
+                            </li>
+                            <li class="waves-effect"><a href="#!">1</a></li>
+                            <li class="waves-effect">/</li>
+                            <li class="waves-effect"><a href="#!">5</a></li>
+                            <li class="waves-effect">
+                                <a href="#!"><i class="material-icons">chevron_right</i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ml-4">
+            <a class="logout-btn" href="/logout">
+                <div class="logout-btn2" style="position: fixed; bottom: 0; left: 50%;">
+                    <div class="sidenav-icon">
+                        <img class="logoutimage" style="position: relative; right: 40px; top: 28px;"  src="/images/logout.png"  />
+                    </div>
+                    <div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px; color: black;">Logout</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Client Request Update Modal -->
+    <div id="accountRequestModal" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h5>Create Account Request</h5>
+            <div class="row">
+                <form id="clientReqForm" class="col s12">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="org-name" type="text" class="validate">
+                            <label for="org-name">Oraganization Name</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="client-name" type="text" class="validate">
+                            <label for="client-name">Client Name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="admin-email" type="text" class="validate">
+                            <label for="admin-email">Client Email</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="phone-no" type="text" class="validate">
+                            <label for="phone-no">Phone Number</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s3">
+                            <input id="cost" type="text" class="validate">
+                            <label for="cost">Cost (INR)</label>
+                        </div>
+                        <div class="input-field col s3">
+                            <select id="minutes-allotted">
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="10">10K Mins</option>
+                                <option value="20">20K Mins</option>
+                                <option value="50">50K Mins</option>
+                                <option value="100">100K Mins</option>
+                            </select>
+                            <label>Communication (Mins)</label>
+                        </div>
+                        <div class="input-field col s3">
+                            <select id="storage-allotted">
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="25">25 GB</option>
+                                <option value="50">50 GB</option>
+                                <option value="75">75 GB</option>
+                                <option value="100">100 GB</option>
+                            </select>
+                            <label>Storage (GB)</label>
+                        </div>
+                        <div class="input-field col s3">
+                            <input id="seats-allotted" type="text" class="validate">
+                            <label for="seats-allotted">Seats</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s3">
+                            <label>
+                                <input id="annotationCheck" type="checkbox" class="filled-in" />
+                                <span>Annotation</span>
+                            </label>
+                        </div>
+                        <div class="input-field col s3">
+                            <label>
+                                <input id="pdfCheck" type="checkbox" class="filled-in" />
+                                <span>PDF Manual</span>
+                            </label>
+                        </div>
+                        <div class="input-field col s3">
+                            <label>
+                                <input id="model3dCheck" type="checkbox" class="filled-in" />
+                                <span>AR 3D Model</span>
+                            </label>
+                        </div>
+                        <div class="input-field col s3">
+                            <label>
+                                <input id="recordingCheck" type="checkbox" class="filled-in" />
+                                <span>Recording</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s3">
+                            <label>
+                                <input id="imageCheck" type="checkbox" class="filled-in" />
+                                <span>Image</span>
+                            </label>
+                        </div>
+                        <div class="input-field col s3">
+                            <label>
+                                <input id="chatCheck" type="checkbox" class="filled-in" />
+                                <span>Chat</span>
+                            </label>
+                        </div>
+                        <div class="input-field col s3">
+                            <label>
+                                <input id="videoCheck" type="checkbox" class="filled-in" />
+                                <span>Video</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="javascript:void(0);" id="saveModalData" class="modal-close waves-effect waves-green btn-flat">Send
+                Request</a>
+            <a href="javascript:void(0);" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+        integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-storage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc"></script>
+
+    <script src="./js/firebase-config.js"></script>
+    <script src="/sweetalert2/sweetalert2.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/salesAdminMainDashboard.js"></script>
+</body>
+
+</html>

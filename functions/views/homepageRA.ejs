@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Home</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<%- include('styleScripts.ejs') %>
+
+		<!-- Custom CSS -->
+		<link rel="stylesheet" href="/css/homepage.css" />
+		<link rel="stylesheet" href="/sweetalert2/sweetalert2.css" />
+
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+			<!-- <a class="navbar-brand" href="#">
+				<img id="ajnalogo" src="./images/AjnaSuite_Logo_Main.png" alt="AjnaSuite" />
+			</a> -->
+			<div id="tour-fullwidth" class="navbar-btn" style="display: none;">
+				<button type="button" class="btn-toggle-fullwidth"><i class="fas fa-chevron-circle-right"></i></button>
+			</div>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+				</ul>
+				<form class="form-inline my-2 my-lg-0">
+					<!-- <input class="mr-sm-2 navbar-search" type="search" placeholder="Search"
+						aria-label="Search"> -->
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<img src="./images/user2.png" id="user_img" class="img-responsive img-circle" alt="Avatar"
+							height="45px" width="45px">
+					</a>
+					<ul class="dropdown-menu logged-user-menu list-justify">
+						<li>Name : <span id="user-info-name"> <b></b></span></li>
+						<li>Team : <span id="user-info-group"> <b>Test</b></span></li>
+						<li>Email : <span id="user-info-email"> <b></b></span></li>
+						<li style="text-align: center;"><button type="button" class="btn btn-sm"
+								id="editProfBtn">Edit</button>&nbsp;&nbsp;<button type="button" class="btn btn-sm"
+								id="resetPasswordBtn">Reset Password</button>
+						</li>
+						<!-- <li>Gender : <span><b> Male</b></span></li> -->
+					</ul>
+				</form>
+
+			</div>
+		</nav>
+
+		<!-- LEFT SIDEBAR -->
+		<div id="sidebar-nav" class="sidebar">
+			<!-- <div class="collapse navbar-collapse" id="sidenavbarSupportedContent"> -->
+			<nav>
+				<ul class="nav" id="sidebar-nav-menu">
+					<div class="col-md-12" id="homeDiv">
+						<li><i class="fas fa-lg fa-home"></i> <b>Home</b></li>
+					</div>
+					<div class="col-md-12">
+						<li data-toggle="modal" data-target="#modalSettings"><i class="fas fa-lg fa-cog"></i>
+							<b>Settings</b>
+						</li>
+					</div>
+				</ul>
+				<div class="bottom-nav-menu">
+					<hr>
+					<ul class="nav" id="sidebar-nav-menu-bottom">
+						<div class="col-md-12">
+							<li> <b>About</b></li>
+						</div>
+						<div class="col-md-12">
+							<li> <b>Help</b></li>
+						</div>
+						<div class="col-md-12" id="logoutDiv">
+							<li> <b>Logout</b></li>
+						</div>
+					</ul>
+				</div>
+			</nav>
+			<!-- </div> -->
+		</div>
+		<!-- END LEFT SIDEBAR -->
+
+		<div class="main">
+			<div class="main-content">
+				<div class="content-heading clearfix">
+					<h2><span id="greeting"></span>, <span id="user_name"></span></h2>
+				</div>
+				<div class="row project-items-row">
+				</div>
+				<div class="row btnRow">
+					<div class="col-md-3"></div>
+					<div class="col-md-3">
+						<button class="btn btn-lg homepageBtn" id="create" data-toggle="modal"
+							data-target="#modalCreate"><i class="far fa-plus-square"></i> Create Room</button>
+					</div>
+					<div class="col-md-3">
+						<button class="btn btn-lg homepageBtn" id="joinMeet" data-toggle="modal"
+							data-target="#modalJoin"><i class="fas fa-link"></i> Join Room</button>
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- joinMeetingModal -->
+	<div class="modal fade" id="modalJoin" tabindex="-1" role="dialog" aria-labelledby="joinModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content homepageModal">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalJoinTitle">Join Meeting</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<!-- <div class="row" style="text-align: center;" >
+							<div class="col-md-12">
+								<h4 style="display: inline-block;">Enter Code<h2>								
+							</div>																	
+						</div> -->
+
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<div class="field-wrapper">
+									<input type="text" name="text" id="enterCode" class="form-control"
+										autocomplete="off" spellcheck="false" required="required">
+									<div class="field-placeholder"><span>Room Number</span></div>
+								</div>
+							</div>
+						</div><br>
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<div class="field-wrapper">
+									<input type="text" name="text" id="enterPass" class="form-control"
+										autocomplete="off" spellcheck="false" required="required">
+									<div class="field-placeholder"><span>Room Password</span></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button id="joinSubmit" type="button" class="btn btn-primary homepageBtn">Join</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- enterMeetingModal -->
+	<div class="modal fade" id="modalEnter" tabindex="-1" role="dialog" aria-labelledby="enterModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content homepageModal">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalJoinTitle">Enter Meeting</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<!-- <div class="row" style="text-align: center;" >
+							<div class="col-md-12">
+								<h4 style="display: inline-block;">Enter Code<h2>								
+							</div>																	
+						</div> -->
+
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<div class="field-wrapper">
+									<h5 id="roomNo"></h5>
+								</div>
+							</div>
+						</div><br>
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<div class="field-wrapper">
+									<input type="text" name="text" id="enterPassword" class="form-control"
+										autocomplete="off" spellcheck="false" required="required">
+									<div class="field-placeholder"><span>Room Password</span></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button id="enterSubmit" type="button" class="btn btn-primary homepageBtn">Join</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- createMeetingModal -->
+	<div class="modal fade" id="modalCreate" tabindex="-1" role="dialog" aria-labelledby="CreateModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content homepageModal">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalCreateTitle">Create Meeting</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<h4 style="display: inline-block;">Enter Room Details<h2>
+							</div>
+						</div>
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<div class="field-wrapper">
+									<input type="text" name="text" id="roomName" class="form-control" autocomplete="off"
+										spellcheck="false" required="required">
+									<div class="field-placeholder"><span>Project Name</span></div>
+								</div>
+								<!-- <input id="roomName" class="form-control" placeholder="Room Name" style="border-width:0 0 2px; outline: 0; border-color: black; box-shadow: none; width: 50%; display: inline-block; text-align: center;" />								 -->
+							</div>
+						</div><br>
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<div class="field-wrapper">
+									<input type="text" name="text" id="roomNum" class="form-control" autocomplete="off"
+										spellcheck="false" required="required">
+									<div class="field-placeholder"><span>Room Number</span></div>
+								</div>
+								<!-- <input id="roomNum" class="form-control" placeholder="Room Number" style="border-width:0 0 2px; outline: 0; border-color: black; box-shadow: none; width: 50%; display: inline-block; text-align: center;" />								 -->
+							</div>
+						</div><br>
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<div class="field-wrapper">
+									<input type="text" name="text" id="roomPass" class="form-control" autocomplete="off"
+										spellcheck="false" required="required">
+									<div class="field-placeholder"><span>Room Password</span></div>
+								</div>
+								<!-- <input id="roomNum" class="form-control" placeholder="Room Number" style="border-width:0 0 2px; outline: 0; border-color: black; box-shadow: none; width: 50%; display: inline-block; text-align: center;" />								 -->
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button id="createSubmit" type="button" class="btn btn-primary homepageBtn">Create Room</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Sharing room link modal -->
+	<div class="modal fade" id="share_room_modal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content homepageModal">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle"
+						style="display: inline-block; color: black !important;">Share this room</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<div class="field-wrapper">
+									<input type="text" id="roomIdShare" class="form-control" readonly>
+									<div class="field-placeholder"><span class="tooltiptext" id="myTooltip">Copy to
+											clipboard</span></div>
+								</div>
+							</div>
+						</div><br>
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<div class="field-wrapper">
+									<input type="text" id="emailList" placeholder="Participants Email"
+										class="form-control" autocomplete="off" spellcheck="false" required="required">
+								</div>
+							</div>
+						</div><br>
+					</div>
+				</div>
+				<div class="modal-footer" style="text-align: center;">
+					<button type="button" id="sendEmailBtn" class="btn btn-primary homepageBtn">Send Email</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- settingsModal -->
+	<div class="modal fade" id="modalSettings" tabindex="-1" role="dialog" aria-labelledby="joinModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content homepageModal">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalJoinTitle">Device Settings</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row" style="text-align: center;">
+							<div class="col-md-12">
+								<div class="field-wrapper">
+									<select class="btn btn-dark mr-2" id="audioDevices"
+										style="text-align-last:center; width: 300px;">
+										<option value=''>--Select Audio Device--</option>
+									</select>
+									<br>
+									<br>
+									<select class="btn btn-dark mr-2" id="videoDevices"
+										style="text-align-last:center; width: 300px;">
+										<option value=''>--Select Video Device--</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button id="saveDeviceSubmit" type="button" class="btn btn-primary homepageBtn">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Global Variables -->
+	<script src="/js/common.js"></script>
+	<script>
+	</script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-firestore.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+	<script src="./js/firebase-config.js"></script>
+	<script src="/sweetalert2/sweetalert2.js"></script>
+	<script src="https://smtpjs.com/v3/smtp.js"></script>
+
+	<!-- JQuery & Bootstrap Dependency -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script src="/js/homepageRAScript.js"></script>
+
+</body>
+
+</html>

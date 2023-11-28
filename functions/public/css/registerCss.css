@@ -1,0 +1,124 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.main-content {
+    margin: 10% 25%;
+}
+
+#gauth-div {
+    margin-top: 20%;
+}
+
+#regForm {
+    background-color: #ffffff;
+    padding: 40px;
+    width: 70%;
+    min-width: 300px;
+}
+
+/* Style the input fields */
+
+.form-inp {
+    padding: 10px;
+    width: 100%;
+    font-size: 17px;
+    border: 1px solid #aaaaaa;
+    font-weight: bolder;
+    font-size: larger;
+    padding: 10px 0;
+    margin-bottom: 30px;
+    color: #384afe;
+    font-weight: bolder;
+    font-size: xx-large;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: none;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #999;
+}
+
+/* Hide all steps by default: */
+
+.tab {
+    display: none;
+}
+
+/* Make circles that indicate the steps of the form: */
+
+.step {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbbbbb;
+    border: none;
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
+}
+
+/* Mark the active step: */
+
+.step.active {
+    opacity: 1;
+}
+
+/* Mark the steps that are finished and valid: */
+
+.step.finish {
+    background-color: #4CAF50;
+}
+
+form div {
+    position: relative;
+}
+
+label {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    color: #999;
+    transition: 0.5s;
+    pointer-events: none;
+    font-size: large;
+}
+
+.form-inp:focus~label, .form-inp:valid~label {
+    top: -12px;
+    left: 0;
+}
+
+.form-inp:focus, .form-inp:valid {
+    border-bottom: 2px solid black;
+}
+
+button {
+    background-image: linear-gradient(#5160FF, #0017FF);
+    border: transparent;
+    border-radius: 15px;
+}
+
+#img-canvas {
+    height: 300px;
+    width: 300px;
+    border: transparent;
+    border-radius: 40px;
+    background-color: lightgray;
+}
+
+.navBtns {
+    height: 60px;
+    width: 60px;
+}
+
+#upload-btn {
+    padding: 15px;
+    margin-bottom: 30px;
+}
+
+button:focus {
+    outline: 0 !important;
+}
+
+input {}

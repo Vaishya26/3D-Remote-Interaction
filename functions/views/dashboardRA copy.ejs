@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AjnaSuite-Remote Assistance</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <!-- BootStrap 4 CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- FontAwesome 5 CDN -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/v4-shims.css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+    <!-- Google Material Design, Font CDN -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <!-- Custom Controllers -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r123/three.min.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/three-freeform-controls@0.1.12/dist/three-freeform-controls.umd.js"></script> -->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/sweetalert2/sweetalert2.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.min.js"
+        integrity="sha512-n8IpKWzDnBOcBhRlHirMZOUvEq2bLRMuJGjuVqbzUJwtTsgwOgK5aS0c1JA647XWYfqvXve8k3PtZdzpipFjgg=="
+        crossorigin="anonymous"></script>
+    <!-- <script src="https://unpkg.com/three@0.126.1/build/three.module.js"></script> -->
+    <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://unpkg.com/three@0.126.1/examples/js/controls/TransformControls.js"></script>
+    <script src="https://unpkg.com/three@0.126.1/examples/js/controls/OrbitControls.js"></script>
+    <script src="/js/cannon.js"></script>
+
+    <style>
+        .navbar-control {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cursor" style="display: none;">
+        <div class="cursor-point"></div>
+    </div>
+    <!-- divs for setting views of local and remote streams  -->
+    <div id="video">
+        <div id="local_stream" class="video-placeholder"></div>
+        <div id="local_video_info" class="video-profile hide"></div>
+        <div id="video_autoplay_local" class="autoplay-fallback hide"></div>
+    </div>
+    <div id="overlay" style="display: none;">
+        <div class="main">
+            <div class="main-content upper-navbar">
+                <div class="container-fluid">
+                    <div class="row fullwidthRow" id="overlayRow2">
+                        <div class="col-md-1" style="float: left;">
+                        </div>
+                        <div class="col-md-10">
+                            <div class="stickyNoteDiv col-md-3">
+                                <textarea style="display: none;" id="stickyText"
+                                    placeholder="This is a sticky note you can type and edit."></textarea>
+                            </div>
+                            <div class="col-md-9" id="newDiv" style="display: none;">
+                                <div class="zoomVideoDiv">
+                                    <div class="">
+                                        <video id="zoomedVideoEle" muted style="object-fit: cover;">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <!-- <span style="color:white"><i class="fas fa-microphone-slash fa-lg"
+												style="float: left; padding-left: 10px; padding-top: 5px;"></i><b>Remote
+												User 1</b></span> -->
+                                    </div>
+                                </div>
+                                <span style="color:white; margin-left: 10px;" id="closeEnlargedVidBtn"><i
+                                        class="fas fa-lg fa-times"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row fullwidthRow" id="overlayRow3">
+                        <div class="col-md-3">
+                            <button class="btn btn-circle btn-md footer_btn" type="button">
+                                <img data-toggle2="tooltip" data-placement="right" data-container="body"
+                                    title="Share Screen" id="screenshare" src="/images/ScreenShareOff.png"
+                                    alt="shareScreen" style="width: 2em;">
+                            </button>
+                            <button class="btn btn-circle btn-md footer_btn" data-toggle="modal"
+                                data-target="#share_room_modal" id="shareDetailsBtn">
+                                <img src="/images/Add_Member.png" alt="shareDetails" style="width: 2em;">
+                            </button>
+                        </div>
+                        <div class="col-md-6" style="text-align: center;">
+                            <div id="middlePanel">
+                                <button id="stickyNotesBtn" class="btn btn-circle btn-md panelBtn" type="button">
+                                    <img data-toggle2="tooltip" data-placement="right" data-container="body"
+                                        title="Sticky Notes" src="/images/StickyNote.png" alt="stickyNotes"
+                                        style="width: 2em;">
+                                </button>
+                                <button class="btn btn-circle btn-md panelBtn">
+                                    <img data-toggle2="tooltip" data-placement="right" data-container="body"
+                                        title="Attach Models" src="/images/Insert.png" alt="attachments"
+                                        data-toggle="modal" data-target="#openAttachmentModal" style="width: 1.5em;">
+                                </button>
+                                <!-- <button id="tv" class="btn btn-circle btn-md panelBtn" type="button">
+                                    <img data-toggle2="tooltip" data-placement="right" data-container="body"
+                                        title="Open TV Viewer" src="/images/ScreenShareOn.png" alt="TV"
+                                        style="width: 2.5em;">
+                                </button> -->
+                                <button id="muteAudio" class="btn btn-circle btn-md panelBtn" type="button">
+                                    <img src="/images/Mic.png" alt="muteAudio" style="width: 1.5em;">
+                                </button>
+                                <button id="muteVideo" class="btn btn-circle btn-md panelBtn">
+                                    <img src="/images/VideoOnBlue.png" alt="muteVideo" style="width: 3em;">
+                                </button>
+                                <button class="btn btn-circle btn-md panelBtn btn_msgs">
+                                    <img data-toggle2="tooltip" data-placement="right" data-container="body"
+                                        title="Chat" src="/images/Chat.png" alt="message" style="width: 3em;">
+                                </button>
+                                <button id="showScreenshotsBtn" class="btn btn-circle btn-md panelBtn">
+                                    <img data-toggle2="tooltip" data-placement="right" data-container="body"
+                                        data-toggle="modal" data-target="#screenshot_modal" title="Screenshots"
+                                        src="/images/ScreenshotsBlue.png" alt="SS" style="width: 3em;">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button id="logout" class="btn btn-circle btn-md footer_btn footer_btn_right">
+                                <img src="/images/Exit.png" alt="logout" style="width: 2em;"></button>
+                            <button class="btn btn-circle btn-md footer_btn footer_btn_right"
+                                data-target="#more-opts-modal" data-toggle="modal">
+                                <img src="/images/more.png" alt="more" style="width: 0.5em;">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div id="sidebar-right" class="right-sidebar">
+                <div class="sidebar-widget" style="float: right;">
+                    <button class="btn btn-circle btn-md hide_sidebar_btn" id="close_sidebar_btn"><img
+                            src="/images/rightArrow.png" alt="message" style="width: 2em; margin-right: 20px;"></button>
+                    <!-- <a class="btn btn-primary ">
+						<i class="fa fa-arrow-right"></i>
+					</a> -->
+                </div>
+                <div class="sidebar-widget">
+                    <div class="row margin-top-30">
+                        <div class="panel-heading">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="active"><a href="#chat_div" role="tab" data-toggle="tab"><b>Chat</b></a></li>
+                                <li><a href="#participants_div" role="tab" data-toggle="tab"><b>Participants</b></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="chat_div">
+                                <!-- This is for chat -->
+                                <div class="chat_body_div">
+                                    <ul class="list-unstyled chat_list">
+                                        <!-- Chat li elements goes here -->
+                                    </ul>
+                                </div>
+
+                                <div class="col-md-12 chat_input_div">
+                                    <input type="text" class="form-control" id="chat_msg_inp"
+                                        placeholder="Your message">
+                                    <button class="btn btn-circle btn-md send_msg_btn" id="send_msg_btn"><img
+                                            src="/images/sendMessage.png" alt="message"
+                                            style="width: 2em; margin-right: 20px;"></button>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="participants_div">
+                                <div class="participants-list-div">
+                                    <ul class="list-unstyled list-contacts">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- END RIGHT SIDEBAR -->
+        </div>
+    </div>
+
+    <!-- div for overlaying ui/ux elements -->
+    <div id="info" class="h-100">
+
+        <div class="d-flex justify-content-center pt-2" style="height: 12.5%;">
+            <div id="companylogodiv" style="display: none;  margin-top: 20%;" class="align-self-start">
+                <img id="companylogo" height="100px" src="/images/AjnaSuite_Logo_Main.png" alt="AjnaLens"
+                    style="background-color: white; border-radius: 5px;">
+            </div>
+        </div>
+        <br>
+        <br>
+        <!-- Model load Bar -->
+        <div class="d-flex justify-content-center pt-2" style="height: 12.5%;">
+            <div id="model_load_bar_container" class="progress align-self-start"
+                style="width: 20%;display: none; margin-left: 40%;">
+                <div id="model_load_bar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <span id="model_load_bar_percent"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="tempDiv" style="margin-bottom: 55px; display: none;">
+        <div id="innerTemp">
+            <div>
+                <img class="toolbar-img" id="t" src="/images/Position.png" alt="transform" data-toggle2="tooltip"
+                    data-placement="right" data-container="body" title="Translate">
+            </div>
+            <div>
+                <img class="toolbar-img" id="r" src="/images/Rotation.png" alt="rotate" data-toggle2="tooltip"
+                    data-placement="right" data-container="body" title="Rotate">
+            </div>
+            <div>
+                <img class="toolbar-img" id="s" src="/images/Scale.png" alt="scale" data-toggle2="tooltip"
+                    data-placement="right" data-container="body" title="Scale">
+            </div>
+            <div>
+                <img class="toolbar-img" id="annotations" src="/images/annotations.png" data-toggle2="tooltip"
+                    data-placement="right" data-container="body" title="Annotate" alt="annotations">
+            </div>
+            <div>
+                <img class="toolbar-img" id="frontSpawn" src="/images/SpawnPointBlack.png" data-toggle2="tooltip"
+                    data-placement="right" data-container="body" title="Move in front" alt="move">
+            </div>
+            <div>
+                <img class="toolbar-img" id="disperseBtn" src="/images/disperse.png" alt="disperse"
+                    data-toggle2="tooltip" data-placement="right" data-container="body" title="Disperse">
+            </div>
+            <div>
+                <img class="toolbar-img" id="restoreBtn" src="/images/restore.png" alt="restore" data-toggle2="tooltip"
+                    data-placement="right" data-container="body" title="Restore">
+            </div>
+            <div>
+                <img class="toolbar-img" id="selectParentBtn" src="/images/level_up.png" alt="Select Parent"
+                    data-toggle2="tooltip" data-placement="right" data-container="body" title="Select Parent">
+            </div>
+            <div>
+                <img class="toolbar-img" id="next" data-toggle2="tooltip" data-placement="right" data-container="body"
+                    title="Next Page" src="/images/rightArrow.png" alt="nextPage">
+            </div>
+            <div>
+                <img class="toolbar-img" id="previous" data-toggle2="tooltip" data-placement="right"
+                    data-container="body" title="Prev Page" src="/images/leftArrow.png" alt="prevPage">
+            </div>
+            <div>
+                <img class="toolbar-img" id="play" data-toggle2="tooltip" data-placement="right" data-container="body"
+                    title="Play Video" src="/images/play.png" alt="play">
+            </div>
+            <div>
+                <img class="toolbar-img" id="ax" data-toggle2="tooltip" data-placement="right" data-container="body"
+                    title="Remove Arrows" src="/images/removeArrow.png" alt="delete">
+            </div>
+            <div>
+                <img class="toolbar-img" id="zoomin" data-toggle2="tooltip" data-placement="right" data-container="body"
+                    title="Zoom in" src="/images/zoom_in.png" alt="zoom_in">
+            </div>
+            <div>
+                <img class="toolbar-img" id="zoomout" data-toggle2="tooltip" data-placement="right"
+                    data-container="body" title="Zoom out" src="/images/zoom_out.png" alt="zoom_out">
+            </div>
+            <div>
+                <img class="toolbar-img" id="pinScreen" data-toggle2="tooltip" data-placement="right"
+                    data-container="body" title="Pin-Screen" src="/images/pinScreen.png" alt="pin_screen">
+            </div>
+            <div>
+                <img class="toolbar-img" id="unpinScreen" data-toggle2="tooltip" data-placement="right"
+                    data-container="body" title="Attach To Avatar" src="/images/attachToAvatar.png"
+                    alt="attach_to_avatar">
+            </div>
+            <div>
+                <img class="toolbar-img" id="saveAnnotations" data-toggle2="tooltip" data-placement="right"
+                    data-container="body" title="Save Annotations" src="/images/saveAnnotations.png"
+                    alt="saveAnnotations">
+            </div>
+            <div>
+                <img class="toolbar-img" id="screenShot" data-toggle2="tooltip" data-placement="right"
+                    data-container="body" title="Snap-Shot" src="/images/screenShot.png" alt="snap_shot">
+            </div>
+            <div>
+                <img class="toolbar-img" id="attach" data-toggle2="tooltip" data-placement="right" data-container="body"
+                    data-toggle="modal" data-target="#openAttachmentModalTV" title="Attach"
+                    src="/images/attachments.png" alt="attach">
+            </div>
+            <div>
+                <img class="toolbar-img" id="x" data-toggle2="tooltip" data-placement="right" data-container="body"
+                    title="Delete Model" src="/images/delete.png" alt="delete">
+            </div>
+        </div>
+    </div>
+
+    <div id="annotate-body">
+        <div id="annotate-header">
+            <div id="annotate-exit">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Grey_close_x.svg/1024px-Grey_close_x.svg.png"
+                    width="15px" height="15px" />
+            </div>
+            <div id="annotate-title">
+                <img src="https://icon-library.com/images/public-library-icon/public-library-icon-15.jpg" height="35px"
+                    width="35px" />
+                <span>Library</span>
+            </div>
+        </div>
+        <div id="annotate-content"></div>
+    </div>
+    <div class="row objects-row" id="obj-people" style="display: none;">
+        <div class="d-flex">
+            <div class="ele-obj text" id="people">People</div>
+            <div class="ele-obj vertical-line"></div>
+            <div class="ele-obj text" id="object">Object</div>
+        </div>
+    </div>
+    <!--PEOPLE RIGHT SIDEBAR -->
+    <div id="sidebar-right" class="right-sidebar-people">
+        <div class="sidebar-widget" style="float: right;">
+            <button class="btn btn-circle btn-md hide_sidebar_btn" id="close_sidebar_btn"><img
+                    src="/images/rightArrow.png" alt="message" style="width: 2em; margin-right: 20px;"></button>
+
+        </div>
+        <div class="sidebar-widget">
+            <div class="row margin-top-30">
+                <div class="panel-heading">
+                    <ul class="nav nav-tabs people-tabs" role="tablist">
+                        <li class="active"><b>People</b></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="chat_div">
+                        <ul id="people-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- PEOPLE END RIGHT SIDEBAR -->
+
+    <!--OBJECT RIGHT SIDEBAR -->
+    <div id="sidebar-right" class="right-sidebar-object">
+        <div class="sidebar-widget" style="float: right;">
+            <button class="btn btn-circle btn-md hide_sidebar_btn" id="close_sidebar_btn"><img
+                    src="/images/rightArrow.png" alt="message" style="width: 2em; margin-right: 20px;"></button>
+
+        </div>
+        <div class="sidebar-widget">
+            <div class="row margin-top-30">
+                <div class="panel-heading">
+                    <ul class="nav nav-tabs people-tabs" role="tablist">
+                        <li class="active"><b>Object</b></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="chat_div">
+                        <ul id="object-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- OBJECT END RIGHT SIDEBAR -->
+
+
+
+    <!-- scene upload Modal -->
+    <div class="modal fade" id="openSceneModal" tabindex="-1" role="dialog" aria-labelledby="openSceneCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12">
+                                <h4 style="display: inline-block; color: black !important;">Enter Scene Name
+                                    <h2>
+                            </div>
+                        </div>
+
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12">
+                                <input id="enterScene" class="form-control" placeholder="AjnaMeet1"
+                                    style="border-width:0 0 2px; outline: 0; border-color: black; box-shadow: none; width: 50%; display: inline-block; text-align: center;" />
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12">
+                                <button id="submitScene" type="button" class="btn btn-success">Upload</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- annotation's Modal -->
+    <div class="modal fade" id="openAnnotationModal" tabindex="-1" role="dialog"
+        aria-labelledby="openAnnotationCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12">
+                                <h4 style="display: inline-block; color: black !important;">Enter Annotation text
+                                    <h2>
+                            </div>
+                        </div>
+
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12">
+                                <input id="enterAnnotation" class="form-control"
+                                    style="border-width:0 0 2px; outline: 0; border-color: black; box-shadow: none; width: 50%; display: inline-block; text-align: center;" />
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12">
+                                <button id="submitAnnotation" type="button" class="btn btn-success">Annotate</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scene Background chhange modal -->
+    <div class="modal fade" id="bg_img_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"
+                        style="display: inline-block; color: black !important;">Select Image</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="bg_img">
+                        <img id="imgBG" src="/images/final8.png" alt="backgroundImage" width="100%" />
+                    </div>
+                    <div class="bg_img">
+                        <img id="imgBG" src="/images/BGWooden.png" alt="backgroundImage" width="100%" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screenshot modal -->
+    <div class="modal fade" id="screenshot_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"
+                        style="display: inline-block; color: black !important;">Select Image</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="screenshotList">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sharing room link modal -->
+    <div class="modal fade" id="share_room_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"
+                        style="display: inline-block; color: black !important;">Share this room</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12">
+                                <div class="field-wrapper">
+                                    <div class="field-placeholder"><span class="tooltiptext" id="myTooltip">Copy to
+                                            clipboard</span></div>
+                                    <input type="text" id="roomIdShare" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div><br>
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12">
+                                <div class="field-wrapper">
+                                    <input type="text" id="emailList" placeholder="Participants Email"
+                                        class="form-control" autocomplete="off" spellcheck="false" required="required">
+                                </div>
+                            </div>
+                        </div><br>
+                    </div>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button type="button" id="sendEmailBtn" class="btn">Send Email</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- more options modal -->
+    <div class="modal fade" id="more-opts-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="display: inline-block; color: black !important;">More options</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row opts" style="text-align: center;">
+                        <div class="col-md-12" data-toggle="modal" data-target="#openSettingsModal">
+                            Settings
+                        </div>
+                    </div>
+                    <div class="row opts" style="text-align: center;">
+                        <div class="col-md-12" data-toggle="modal" data-target="#openInfoModal">
+                            Info
+                        </div>
+                    </div>
+                    <div class="row opts" style="text-align: center;">
+                        <div id="record" class="col-md-12">
+                            Record
+                        </div>
+                    </div>
+                    <div class="row opts" style="text-align: center;">
+                        <div id="stopRecording" class="col-md-12">
+                            Stop Recording
+                        </div>
+                    </div>
+                    <!-- <div class="row opts" style="text-align: center;">
+                        <div class="col-md-12">
+                            Help
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- attachment Modal -->
+    <div class="modal fade" id="openAttachmentModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body" style="overflow: visible; width: 600px;">
+                    <div class="container-fluid">
+                        <div class="row" style="text-align: center;" id="uploadBtnsRow">
+                            <div class="col-md-6">
+                                <input type="file" id="real-upload" style="display: none;" />
+                                <button id="custom-upload" class="btn btn-dark">Upload</button>
+                            </div>
+                            <div class="col-md-6">
+                                <select class="btn btn-dark" id="models" style="text-align-last:center;">
+                                    <option value=''>--Load Models/Files--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" style="text-align: center; display: none;" id="model-preview-div">
+                            <div id="model-preview">
+                            </div>
+                        </div>
+                        <div class="row" style="text-align: center; display: none;" id="modelUploadBtnDiv">
+                            <div class="col-md-6"><button type="button" id="confirmModelUpload"
+                                    class="btn model-preview-btn">Confirm</button></div>
+                            <div class="col-md-6"><button type="button" id="cancelModelUpload"
+                                    class="btn model-preview-btn">Cancel</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- attachment for TV Modal -->
+    <div class="modal fade" id="openAttachmentModalTV" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body" style="overflow: visible; width: 600px;">
+                    <div class="container-fluid">
+                        <div class="row" id="uploadBtnsRow">
+                            <select class="btn btn-dark" id="assetsForTV" style="text-align-last:center;">
+                                <option value=''>--Load Models/Files--</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- save Room Modal -->
+    <div class="modal fade" id="saveRoomModal" tabindex="-1" role="dialog" aria-labelledby="saveRoomCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12">
+                                <h4 style="display: inline-block; color: black !important;">Enter Project Name
+                                    <h2>
+                            </div>
+                        </div>
+
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12">
+                                <input id="projName" class="form-control" placeholder="Project-ABC"
+                                    style="border-width:0 0 2px; outline: 0; border-color: black; box-shadow: none; width: 50%; display: inline-block; text-align: center;" />
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12">
+                                <button id="submitSaveRoom" type="button" class="btn btn-success">Save</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- settingsModal -->
+    <div class="modal fade" id="openSettingsModal" tabindex="-1" role="dialog" aria-labelledby="joinModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content homepageModal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalJoinTitle" style="color: black; text-align: center;">Switch Device
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12">
+                                <div class="field-wrapper">
+                                    <select class="btn btn-dark mr-2" id="audioDevices"
+                                        style="text-align-last:center; width: 300px;">
+                                        <option value=''>--Select Audio Device--</option>
+                                    </select>
+                                    <br>
+                                    <br>
+                                    <select class="btn btn-dark mr-2" id="videoDevices"
+                                        style="text-align-last:center; width: 300px;">
+                                        <option value=''>--Select Video Device--</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button id="switchDeviceSubmit" type="button" class="btn btn-primary homepageBtn">Switch</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- InfoModal -->
+    <div class="modal fade" id="openInfoModal" tabindex="-1" role="dialog" aria-labelledby="joinModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content homepageModal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalJoinTitle" style="color: black; text-align: center;"><b>How to
+                            use?</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row" style="text-align: center;">
+                            <div class="col-md-12">
+                                <div class="field-wrapper">
+                                    <p style="color: black;"> Use <b>Arrow keys</b> to move in X-Z Plane </p>
+                                    <p style="color: black;"> Use Key <b>'R'</b> to move upwards, Key <b>'F'</b> to move
+                                        downwards </p>
+                                    <p style="color: black;"> Use <b>Mouse</b> with Left-click to Rotate, <b>Scroll</b>
+                                        to zoom in & out </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button id="closeInfoModal" type="button" class="btn btn-primary homepageBtn">Let's Begin</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Speech-to-text Modal -->
+    <div class="modal custom-modal fade" id="speechToText" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content draggableModal">
+                <div class="modal-body" style="color: black;">
+                    <div class="container-fluid">
+                        <div class="row" style="text-align: center;">
+                            <p id="transcribedText"
+                                style="word-wrap: break-word; font-size: larger; font-weight: bold; margin: 0px;"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Get Room Name (ejs script)  -->
+    <script>
+        <% if (room != null) { %>
+            window.room = '<%= room %>';
+            document.getElementById('roomIdShare').value = "https://ajnasuite.ajnalens.com/join/" + room;
+        // alert("Your Room id is " + room);
+        <% } else {%>
+        // window.room = prompt("Enter Room Number");
+        // document.getElementById("ar_room").href = "/arpaint/" + room;
+        <% } %>
+
+            console.log('Entering Room ' + room);
+    </script>
+
+    <!-- CDN for PDF.js -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
+
+    <!-- Firbase CDNs and Cookie -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+    <script src="../js/firebase-config.js"></script>
+
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <!-- Global Variables -->
+    <script>
+        const roomName = room;
+        // Options for joining a channel
+        var option = {
+            appID: "50e37a7cbd9a4188b54c3b9204788f19",
+            channel: roomName.toString(),
+            uid: null,
+            token: null
+        };
+    </script>
+
+    <!-- JQuery & Bootstrap Dependency -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"
+        type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        var mobile = (/iphone|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
+        if (mobile) {
+            window.location.href = '/downloadApp'
+            // $('.navWrap').css('display', 'none'); // OR you can use $('.navWrap').hide();
+        }
+
+        $(document).ready(function () {
+            $('.btn_msgs').click(function () {
+                if (!$('.right-sidebar').hasClass('active')) {
+                    $('.right-sidebar').addClass('active');
+                    document.removeEventListener("mousewheel", onDocumentMouseWheel, false);
+                }
+            });
+
+            $('.hide_sidebar_btn').on('click', function () {
+                if ($('.right-sidebar').hasClass('active')) {
+                    $('.right-sidebar').removeClass('active');
+                    document.addEventListener("mousewheel", onDocumentMouseWheel, false);
+                }
+            });
+            $('#people').click(function () {
+                if (!$('.right-sidebar-people').hasClass('active')) {
+                    $('.right-sidebar-people').addClass('active');
+                    document.removeEventListener("mousewheel", onDocumentMouseWheel, false);
+                }
+            });
+
+            $('.hide_sidebar_btn').on('click', function () {
+                if ($('.right-sidebar-people').hasClass('active')) {
+                    $('.right-sidebar-people').removeClass('active');
+                    document.addEventListener("mousewheel", onDocumentMouseWheel, false);
+                }
+            });
+            $('#object').click(function () {
+                if (!$('.right-sidebar-object').hasClass('active')) {
+                    $('.right-sidebar-object').addClass('active');
+                    document.removeEventListener("mousewheel", onDocumentMouseWheel, false);
+                }
+            });
+
+            $('.hide_sidebar_btn').on('click', function () {
+                if ($('.right-sidebar-object').hasClass('active')) {
+                    $('.right-sidebar-object').removeClass('active');
+                    document.addEventListener("mousewheel", onDocumentMouseWheel, false);
+                }
+            });
+
+            toastr.options = {
+                "timeOut": "5000"
+            };
+
+            $('[data-toggle2="tooltip"]').tooltip({
+                boundary: 'window'
+            });
+        });
+
+        var chat_input = document.getElementById("chat_msg_inp");
+        chat_input.addEventListener("keydown", function (e) {
+            if (e.keyCode === 13) { //checks whether the pressed key is "Enter"
+                $('#send_msg_btn').click();
+            }
+        });
+    </script>
+
+    <!-- Agora CDN -->
+    <script src="https://cdn.agora.io/sdk/release/AgoraRTCSDK-3.4.0.js"></script>
+    <script src="/js/agora-rtm-sdk-1.4.1.js"></script>
+    <script src="/sweetalert2/sweetalert2.js"></script>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+
+    <!-- Main Script for ThreeJS operations -->
+    <script src="/js/keyboard.js"></script>
+    <script src="/js/moduleScript.js"></script>
+    <!-- <script src="/js/three-to-cannon.js"></script> -->
+
+</body>
+
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>AjnaSuite-Push Release</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<%- include('styleScripts.ejs') %>
+
+	<!-- Custom CSS -->
+	<!-- <link rel="stylesheet" href="main.css" /> -->
+	<link rel="stylesheet" href="/css/homepage.css" />
+	<link rel="stylesheet" href="/css/releaseForm.css" />
+	<link rel="stylesheet" href="../sweetalert2/sweetalert2.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css"
+		integrity="sha512-EZSUkJWTjzDlspOoPSpUFR0o0Xy7jdzW//6qhUkoZ9c4StFkVsp9fbbd0O06p9ELS3H486m4wmrCELjza4JEog=="
+		crossorigin="anonymous" />
+	<style>
+		.dropify-wrapper .dropify-message span.file-icon {
+			font-size: 30px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+			<a class="navbar-brand" href="#">
+				<h2><b>AjnaSuite</b></h2>
+			</a>
+			<div id="tour-fullwidth" class="navbar-btn" style="display: none;">
+				<button type="button" class="btn-toggle-fullwidth"><i class="fas fa-chevron-circle-right"></i></button>
+			</div>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+				</ul>
+				<form class="form-inline my-2 my-lg-0">
+					<!-- <input class="mr-sm-2 navbar-search" type="search" placeholder="Search"
+aria-label="Search"> -->
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<img src="images/user2.png" id="user_img" class="img-responsive img-circle" alt="Avatar" height="45px"
+							width="45px">
+					</a>
+					<ul class="dropdown-menu logged-user-menu list-justify">
+						<li>Name : <span id="user-info-name"> <b></b></span></li>
+						<li>Team : <span id="user-info-group"> <b>AjnaLens</b></span></li>
+						<li>Email : <span id="user-info-email"> <b></b></span></li>
+						<li style="text-align: center;"><button type="button" class="btn btn-sm"
+								id="editProfBtn">Edit</button></li>
+						<!-- <li>Gender : <span><b> Male</b></span></li> -->
+					</ul>
+				</form>
+
+			</div>
+		</nav>
+
+		<!-- LEFT SIDEBAR -->
+		<div id="sidebar-nav" class="sidebar">
+			<!-- <div class="collapse navbar-collapse" id="sidenavbarSupportedContent"> -->
+			<nav>
+				<ul class="nav" id="sidebar-nav-menu">
+					<div class="col-md-12" id="homepageDiv">
+						<li><i class="fas fa-lg fa-home"></i> <b>Home</b></li>
+					</div>
+					<div class="col-md-12">
+						<li><i class="fas fa-lg fa-network-wired"></i> <b>Integration</b></li>
+					</div>
+					<div class="col-md-12">
+						<li><i class="fas fa-lg fa-cog"></i> <b>Settings</b></li>
+					</div>
+					<div class="col-md-12" id="releasesDiv">
+						<li><i class="fas fa-lg fa-code-branch"></i> <b>Releases</b></li>
+					</div>
+					<div class="col-md-12" id="updateFormDiv" style="display: none;">
+						<li><i class="fas fa-lg fa-file-code"></i> <b>Push Update</b></li>
+					</div>
+					<div class="col-md-12" id="supportDiv">
+						<li><i class="fas fa-lg fa-headset"></i> <b>Support</b></li>
+					</div>
+					<div class="col-md-12" id="editorDiv">
+						<li><i class="fas fa-lg fa-binoculars"></i> <b>Scene Editor</b></li>
+					</div>
+				</ul>
+				<div class="bottom-nav-menu">
+					<hr>
+					<ul class="nav" id="sidebar-nav-menu-bottom">
+						<div class="col-md-12">
+							<li> <b>About</b></li>
+						</div>
+						<div class="col-md-12">
+							<li> <b>Help</b></li>
+						</div>
+						<div class="col-md-12" id="logoutDiv">
+							<li> <b>Logout</b></li>
+						</div>
+					</ul>
+				</div>
+			</nav>
+			<!-- </div> -->
+		</div>
+		<!-- END LEFT SIDEBAR -->
+
+		<div class="main">
+			<div class="main-content">
+				<div class="content-heading clearfix">
+					<h2>New Release</h2>
+				</div>
+				<div class="col-md-9">
+					<!-- SIGN UP -->
+					<div class="panel">
+						<div class="panel-body">
+							<form class="form-horizontal label-left" id="update-form">
+								<div class="form-group">
+									<div class="col-sm-9">
+										<select id="update-type" name="update-type" class="form-control">
+											<option value="">-- Select Update Type --</option>
+											<option value="feature">Feature Addition</option>
+											<option value="apk">APK Update</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="proj-name"
+											placeholder="Project Name">
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="version-num"
+											placeholder="Version Number">
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-9">
+										<textarea class="form-control" name="update-desc" placeholder="Message"
+											id="update-desc" rows="3" cols="30"></textarea>
+									</div>
+								</div>
+								<div class="form-group git-div" style="display: none;">
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="git-link"
+											placeholder="Git link">
+									</div>
+								</div>
+								<div class="form-group file-div" style="display: none;">
+									<div class="col-sm-9">
+										<input id="file-inp" type="file" class="form-control dropify">
+									</div>
+								</div>
+								<button type="button" id="submit-btn" class="btn btn-lg btn-fullrounded center-block publish-btn"><i
+										class="fa fa-check-circle"></i>
+									<span>Publish</span>
+								</button>
+							</form>
+						</div>
+					</div>
+					<!-- END SIGN UP -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Global Variables -->
+	<script src="/js/common.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-storage.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+	<script src="./js/firebase-config.js"></script>
+	<!-- JQuery & Bootstrap Dependency -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"
+		integrity="sha512-8QFTrG0oeOiyWo/VM9Y8kgxdlCryqhIxVeRpWSezdRRAvarxVtwLnGroJgnVW9/XBRduxO/z1GblzPrMQoeuew=="
+		crossorigin="anonymous"></script>
+	<script src="../sweetalert2/sweetalert2.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.js" integrity="sha512-Fq/wHuMI7AraoOK+juE5oYILKvSPe6GC5ZWZnvpOO/ZPdtyA29n+a5kVLP4XaLyDy9D1IBPYzdFycO33Ijd0Pg==" crossorigin="anonymous"></script> -->
+	<script src="/js/release_update.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,253 @@
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.panel-body {
+    padding: 15px;
+}
+
+.panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.panel-heading>.dropdown .dropdown-toggle {
+    color: inherit;
+}
+
+.panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    color: inherit;
+}
+
+.panel-title>a, .panel-title>small, .panel-title>.small, .panel-title>small>a, .panel-title>.small>a {
+    color: inherit;
+}
+
+.panel-footer {
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.panel>.list-group, .panel>.panel-collapse>.list-group {
+    margin-bottom: 0;
+}
+
+.panel>.list-group .list-group-item, .panel>.panel-collapse>.list-group .list-group-item {
+    border-width: 1px 0;
+    border-radius: 0;
+}
+
+.panel>.list-group:first-child .list-group-item:first-child, .panel>.panel-collapse>.list-group:first-child .list-group-item:first-child {
+    border-top: 0;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.panel>.list-group:last-child .list-group-item:last-child, .panel>.panel-collapse>.list-group:last-child .list-group-item:last-child {
+    border-bottom: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.panel>.panel-heading+.panel-collapse>.list-group .list-group-item:first-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.panel-heading+.list-group .list-group-item:first-child {
+    border-top-width: 0;
+}
+
+.list-group+.panel-footer {
+    border-top-width: 0;
+}
+
+.list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}
+
+/* list contacts */
+
+.list-contacts {
+    margin-bottom: 0;
+}
+
+.list-contacts>li {
+    margin-bottom: 30px;
+}
+
+.list-contacts>li:before, .list-contacts>li:after {
+    content: " ";
+    display: table;
+}
+
+.list-contacts>li:after {
+    clear: both;
+}
+
+.list-contacts>li:last-child {
+    margin-bottom: 0;
+}
+
+.list-contacts .media {
+    float: left;
+    position: relative;
+}
+
+.list-contacts .picture {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+}
+
+.list-contacts .status {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    display: block;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: 0;
+    right: -2px;
+    border: 2px solid #fff;
+    background-color: #a0aeba;
+}
+
+.list-contacts .status.online {
+    background-color: #53c265;
+}
+
+.list-contacts .info {
+    float: left;
+    padding-left: 15px;
+}
+
+.list-contacts .info .name, .list-contacts .info .email {
+    display: block;
+}
+
+.list-contacts .info .email, .list-contacts .info .title {
+    color: #a0aeba;
+    font-size: 13px;
+}
+
+.list-contacts .controls {
+    float: right;
+    position: relative;
+    top: 7px;
+}
+
+.list-contacts .controls a {
+    margin-left: 8px;
+    color: #a0aeba;
+    font-size: 20px;
+}
+
+.list-contacts .controls a:hover, .list-contacts .controls a:focus {
+    color: #a0aeba;
+}
+
+@media screen and (max-width: 640px) {
+    .list-contacts .controls {
+        display: none;
+    }
+}
+
+fieldset {
+    padding: 0.35em 0.75em 0.625em;
+}
+
+/**
+   * 1. Correct the text wrapping in Edge and IE.
+   * 2. Correct the color inheritance from `fieldset` elements in IE.
+   * 3. Remove the padding so developers are not caught out when they zero out
+   *    `fieldset` elements in all browsers.
+   */
+
+legend {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    /* 1 */
+    color: inherit;
+    /* 2 */
+    display: table;
+    /* 1 */
+    max-width: 100%;
+    /* 1 */
+    padding: 0;
+    /* 3 */
+    white-space: normal;
+    /* 1 */
+}
+
+.label {
+    border: 1px solid #000;
+}
+
+.label-success {
+    background-color: #41B314;
+}
+
+.label-success[href]:hover, .label-success[href]:focus {
+    background-color: #449d44;
+}
+
+.label-warning {
+    background-color: #e4cb10;
+}
+
+.label-warning[href]:hover, .label-warning[href]:focus {
+    background-color: #ec971f;
+}
+
+.label-transparent {
+    font-weight: 500;
+}
+
+.label-transparent.label-warning {
+    background-color: rgba(228, 203, 16, 0.1);
+    color: #e4cb10;
+}
+
+.label-transparent.label-success {
+    background-color: rgba(65, 179, 20, 0.1);
+    color: #41B314;
+}
+
+.query-img {
+    margin: auto;
+}
+
+.query-img>img {
+    object-fit: contain;
+    max-width: 500px;
+    max-height: 200px;
+}
+
+.dropify-wrapper .dropify-message span.file-icon {
+    font-size: 30px;
+}
+
+.dropify-wrapper {
+    height: 150px;
+}

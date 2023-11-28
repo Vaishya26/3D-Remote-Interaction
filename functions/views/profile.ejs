@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Profile</title>
+
+    <!-- BootStrap 4 CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome 5 CDN -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/v4-shims.css">
+    <link rel="stylesheet" href="/sweetalert2/sweetalert2.css" />
+    <link rel="stylesheet" href="/css/profileCss.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="main">
+            <div class="main-content">
+                <div class="col-md-12" style="text-align: center; margin-top: 3%;">
+                    <h1><b>Profile</b></h1>
+                </div>
+                <div class="col-md-12" id="form-div">
+                    <div class="d-flex justify-content-center" style="margin-top: 10%;">
+                        <div class="col-md-6">
+                            <div class="row profPicDiv" id="img-div">
+                                <img id="u_image" src="" alt="User-image">
+                            </div>
+                            <div class="row profPicDiv" style="text-align: center;">
+                                <button type="button" id="upload-btn" class="btn btn-primary homepageBtn"><i
+                                        class="fas fa-upload"></i> Update</button>
+                            </div>
+                            <input type="file" id="upload-btn-hidden" accept="image/*" style="display: none;">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="field-wrapper hasValue">
+                                        <input type="text" name="text" id="u_name" class="form-control"
+                                            autocomplete="off" spellcheck="false" required="required" value="">
+                                        <div class="field-placeholder"><span>Name</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="field-wrapper hasValue">
+                                        <input type="text" name="text" id="u_email" class="form-control" readonly
+                                            spellcheck="false" required="required" value="">
+                                        <div class="field-placeholder"><span>Email</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="field-wrapper hasValue">
+                                        <input type="text" name="text" id="u_team" class="form-control"
+                                            autocomplete="off" spellcheck="false" required="required" value="AjnaLens">
+                                        <div class="field-placeholder"><span>Team</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3" style="text-align: center;">
+                                    <button id="updateProfile" type="button"
+                                        class="btn btn-primary homepageBtn">Save</button>
+                                </div>
+                                <div class="col-md-3" style="text-align: center;">
+                                    <button type="button" class="btn btn-primary homepageBtn">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
+
+    <!-- BootStrap 4 JS Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="./js/firebase-config.js"></script>
+    <script src="/sweetalert2/sweetalert2.js"></script>
+    <script src="/js/profileScript.js"></script>
+</body>
+
+</html>

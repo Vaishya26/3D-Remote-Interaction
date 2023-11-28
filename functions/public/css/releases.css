@@ -1,0 +1,163 @@
+.project-accordion {
+    color: #7b8186;
+}
+
+.project-accordion .panel-heading {
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+.project-accordion .panel-heading .panel-title {
+    display: block;
+    font-size: 15px;
+    font-weight: normal;
+}
+
+.project-accordion .panel-heading .panel-title>a {
+    display: block;
+    padding: 15px 12px;
+    color: #717d84;
+}
+
+.project-accordion .panel-heading .panel-title>a:hover, .project-accordion .panel-heading .panel-title>a:focus {
+    color: #717d84;
+}
+
+.project-accordion .panel-heading .panel-title>a>.icon-indicator {
+    min-width: 18px;
+}
+
+.project-accordion .panel-heading .panel-title .toggle-icon {
+    float: right;
+    color: #c6d2dd;
+}
+
+.project-accordion .panel-heading+.panel-collapse>.panel-body {
+    border-top: none;
+    background-color: #fafbfc;
+}
+
+.project-accordion .panel-heading .label {
+    margin-left: 10px;
+}
+
+.project-accordion .panel-heading .note {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #a0aeba;
+}
+
+.project-metrics .main-info-item .title, .project-metrics .main-info-item .value {
+    display: block;
+}
+
+.project-metrics .main-info-item .title {
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: #a0aeba;
+}
+
+.project-metrics.milestone-section .main-info-item .title {
+    font-size: 12px;
+}
+
+.project-metrics.milestone-section .main-info-item .value {
+    font-size: 13px;
+}
+
+.layout-table {
+    display: table;
+    width: 100%;
+}
+
+.layout-table .cell {
+    display: table-cell;
+}
+
+.layout-table .cell.valign-top {
+    vertical-align: top;
+}
+
+.layout-table .cell.valign-middle {
+    vertical-align: middle;
+}
+
+.layout-table .cell.valign-bottom {
+    vertical-align: bottom;
+}
+
+@media screen and (max-width: 640px) {
+    .layout-table, .layout-table .cell {
+        display: block;
+    }
+    .layout-table .cell {
+        margin-bottom: 10px;
+    }
+    .layout-table .cell.text-right {
+        text-align: left;
+    }
+}
+
+.project-milestone {
+    margin-top: 10px;
+}
+
+.project-milestone .milestone-section {
+    margin-bottom: 45px;
+}
+
+.project-milestone .milestone-section:last-child {
+    margin-bottom: 0;
+}
+
+.project-milestone .milestone-heading {
+    margin: 0 0 12px 0;
+    font-size: 12px;
+    color: #a0aeba;
+}
+
+.project-milestone .milestone-description {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.project-milestone .panel-footer {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    background-color: #f2f5f8;
+}
+
+.project-milestone .panel-footer .btn {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+@media screen and (max-width: 640px) {
+    .project-milestone .panel-heading .milestone-title {
+        display: block;
+    }
+    .project-milestone .panel-heading .label, .project-milestone .panel-heading .note {
+        display: inline-block;
+        vertical-align: middle;
+        *vertical-align: auto;
+        *zoom: 1;
+        *display: inline;
+        margin-top: 5px;
+        margin-left: 20px;
+    }
+    .project-milestone .panel-heading .panel-title .toggle-icon {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        margin-top: -7.5px;
+    }
+    .project-milestone .panel-footer .btn {
+        display: block;
+        margin-bottom: 8px;
+    }
+}
+
+.panel .panel-heading, .panel .panel-body, .panel .panel-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+}

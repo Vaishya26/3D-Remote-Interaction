@@ -1,0 +1,387 @@
+#overlay {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    overflow: auto;
+    margin: 0px;
+}
+
+#overlay2 button {
+    background: #ffffff;
+    border: 0;
+    color: #000000;
+    /* padding: 16px 20px; */
+    /* text-transform: uppercase; */
+    cursor: pointer;
+}
+
+#overlayRow3 {
+    position: fixed;
+    bottom: 5%;
+}
+
+#overlay1 {
+    position: fixed;
+    top: 8.5%;
+    left: 0%;
+    margin: 0px;
+    height: 100%;
+    width: 70px;
+    border: 1px solid white;
+    background: white;
+}
+
+.btn-circle {
+    width: 55px;
+    height: 55px;
+    border-radius: 50% !important;
+    line-height: 45px;
+    text-align: center;
+    padding: 0;
+    display: inline-block !important;
+    background: #456eff;
+}
+
+.footer_btn {
+    margin-top: 60px;
+    margin-left: 15px;
+    margin-right: 20px;
+}
+
+.main-content {
+    padding: 0 10px 28px 10px;
+    margin: 0;
+    background-color: #F5F6F9;
+}
+
+.fullwidthRow {
+    width: 100%;
+}
+
+.footer_btn_right {
+    float: right;
+}
+
+.upper-navbar {
+    margin-top: 20px;
+    background-color: unset;
+}
+
+.navbar {
+    border: 1px solid transparent;
+    margin: 0px 0px;
+    background-color: white;
+}
+
+.navbar .dropdown-menu.no-collapse:before {
+    left: auto;
+    right: 12px;
+}
+
+.navbar .dropdown-menu.no-collapse:after {
+    left: auto;
+    right: 130px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 27px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #486EF8;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #486EF8;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+
+/* Rounded sliders */
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+#overlay2 {
+    position: fixed;
+    bottom: 5%;
+    left: 40%;
+}
+
+#propertiesPanel {
+    position: fixed;
+    top: 8.5%;
+    left: 78.8%;
+    border: 1px solid white;
+    background: white;
+    box-shadow: 0px 1px 1px 0px white;
+}
+
+.panel-body {
+    left: 20%;
+}
+
+.btn:focus,
+.btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#librariesPanel {
+    position: fixed;
+    top: 1%;
+    left: 75%;
+    border: 1px solid white;
+    border-radius: 20px;
+    background: white;
+    box-shadow: 0px 1px 1px 0px white;
+}
+
+.layersPanel {
+    position: fixed;
+    top: 8.5%;
+    left: 5%;
+    background: white;
+    box-shadow: 0px 1px 1px 0px white;
+}
+
+#stepsPanel {
+    position: fixed;
+    top: 17%;
+    left: 3%;
+    border: 1px solid white;
+    border-radius: 20px;
+    background: white;
+    box-shadow: 0px 1px 1px 0px white;
+}
+
+.stepsMenu {
+    position: fixed;
+    top: 7.7%;
+    margin: 0px;
+    background: white;
+}
+
+#publishAssetsBtn {
+    margin-top: 370px;
+    margin-left: 60px;
+}
+
+#transformSpan {
+    margin: 2px;
+    font-size: 14px;
+}
+
+.position,
+.scale,
+.rotation {
+    margin-top: 20px;
+    margin-left: 4px;
+    font-size: 14px;
+}
+
+.ySpan,
+.zSpan,
+.wSpan {
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+.xSpan {
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+.xSpanScale {
+    margin-left: 28px;
+    font-size: 12px;
+}
+
+.transformInput {
+    width: 60px;
+    border: 1px solid white;
+    background: rgb(58, 64, 72);
+}
+
+.transformInputRotation {
+    width: 40px;
+    border: 1px solid white;
+    background: rgb(58, 64, 72);
+}
+
+.positionSpan,
+.rotationSpan,
+.modeSpan,
+.collidableSpan,
+.animationSpan,
+.markSpan,
+.scaleSpan,
+.fontSpan,
+.colorSpan,
+.lightColorSpan,
+.imageURLSpan,
+.imageLinkSpan,
+.lightIntensitySpan,
+.lightRangeSpan,
+.videoURLSpan,
+.videoLoopSpan,
+.videoControlSpan,
+.videoPlaySpan,
+.audioURLSpan,
+.audioLoopSpan,
+.audioControlSpan,
+.audioPlaySpan,
+.volumeSpan,
+.refDistanceSpan,
+.maxDistanceSpan,
+.RolloffSpan {
+    margin-left: 0px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.lightTypeSpan {
+    margin-left: 0px;
+    font-size: 14px;
+}
+
+.audioControlInput,
+.videoControlInput {
+    margin-left: 47px;
+    margin-bottom: 20px;
+}
+
+.audioLoopInput,
+.videoLoopInput {
+    margin-left: 69px;
+    margin-bottom: 20px;
+}
+
+.collidableInput {
+    margin-left: 105px;
+    width: 20px;
+}
+
+.audioPlayInput,
+.videoPlayInput {
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
+
+.volumeInput {
+    margin-left: 50px;
+    margin-bottom: 20px;
+}
+
+#refDistanceInput {
+    margin-left: 20px;
+    width: 150px;
+    border: 1px solid white;
+    background: rgb(58, 64, 72);
+    margin-bottom: 20px;
+}
+
+#maxDistanceInput {
+    margin-left: 15px;
+    width: 150px;
+    border: 1px solid white;
+    background: rgb(58, 64, 72);
+    margin-bottom: 20px;
+}
+
+#rolloffInput {
+    margin-left: 17px;
+    width: 150px;
+    border: 1px solid white;
+    background: rgb(58, 64, 72);
+}
+
+.colorInput {
+    margin-left: 65px;
+    width: 150px;
+    border: 1px solid white;
+    background: rgb(58, 64, 72);
+    margin-bottom: 10px;
+}
+
+#lightRangeInput {
+    margin-left: 32px;
+    width: 150px;
+    border: 1px solid white;
+    background: rgb(58, 64, 72);
+    margin-bottom: 20px;
+}
+
+#lightIntensityInput {
+    margin-left: 20px;
+    width: 150px;
+    border: 1px solid white;
+    background: rgb(58, 64, 72);
+    margin-bottom: 20px;
+}
+
+#lightColorInput {
+    margin-left: 38px;
+    width: 150px;
+    border: 1px solid white;
+    background: rgb(58, 64, 72);
+    margin-bottom: 20px;
+}
+
+.elementBtn {
+    padding-top: 10px;
+    padding-left: 0px;
+    height: 60px;
+    width: 60px;
+    color: white;
+    text-align: center;
+    background-color: rgb(58, 64, 72);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+}

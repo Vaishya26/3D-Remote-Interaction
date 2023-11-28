@@ -1,0 +1,59 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@0.3.1/dist/mindar.prod.js"></script>
+</head>
+
+<body>
+    <a-scene
+        mindar="imageTargetSrc: https://firebasestorage.googleapis.com/v0/b/ajnasuite.appspot.com/o/qTubeZIRTRTY1oS67pwqNhv3cCJ2%2Ftargets.mind?alt=media&token=47251fb8-8479-4335-b245-bf9199ace40b; showStats: true;"
+        color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false">
+        <a-assets>
+            <!-- <img id="card"
+                src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@0.3.1/examples/assets/card-example/card.png" /> -->
+            <a-asset-item id="chopper" 
+                src="https://firebasestorage.googleapis.com/v0/b/ajnasuite.appspot.com/o/qTubeZIRTRTY1oS67pwqNhv3cCJ2%2Fhelicopter2.glb?alt=media&token=8b167f15-c605-4874-ae8f-453cacadaefc">
+            </a-asset-item>            
+            <a-asset-item id="rover" 
+                src="https://firebasestorage.googleapis.com/v0/b/ajnasuite.appspot.com/o/qTubeZIRTRTY1oS67pwqNhv3cCJ2%2FMarsRover.glb?alt=media&token=17dad4b9-7903-4e8e-87ac-5c1dba35c5ea">
+            </a-asset-item>
+            <a-asset-item id="plane" 
+                src="https://firebasestorage.googleapis.com/v0/b/ajnasuite.appspot.com/o/qTubeZIRTRTY1oS67pwqNhv3cCJ2%2FPlane.glb?alt=media&token=d0bbef1a-2138-4ee1-af13-2f990fee35b0">
+            </a-asset-item>
+            <a-asset-item id="spacestation" 
+                src="https://firebasestorage.googleapis.com/v0/b/ajnasuite.appspot.com/o/qTubeZIRTRTY1oS67pwqNhv3cCJ2%2FSpaceStation.glb?alt=media&token=21174ffe-5658-40b7-a205-7a86dc6a1af3">
+            </a-asset-item>
+            <a-asset-item id="earth" 
+                src="https://firebasestorage.googleapis.com/v0/b/ajnasuite.appspot.com/o/qTubeZIRTRTY1oS67pwqNhv3cCJ2%2Fearth.glb?alt=media&token=7cb4c6f6-cb6d-48f2-a9a6-9bdfd8807256">
+            </a-asset-item>
+        </a-assets>
+
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+        <a-entity mindar-image-target="targetIndex: 0">
+            <!-- <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane> -->
+            <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.1 0.1 0.1" src="#chopper"
+                animation="property: position; to: 0 0.1 0.5; dur: 10000; easing: easeInOutQuad; loop: true; dir: alternate">
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 1">
+            <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="5 5 5" src="#rover"
+                animation="property: position; to: 0 0.1 0.5; dur: 10000; easing: easeInOutQuad; loop: true; dir: alternate">
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 2">
+            <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.1 0.1 0.1" src="#plane"
+                animation="property: position; to: 0 0.1 0.5; dur: 10000; easing: easeInOutQuad; loop: true; dir: alternate">
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 3">
+            <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="5 5 5" src="#spacestation"
+                animation="property: position; to: 0 0.1 0.5; dur: 10000; easing: easeInOutQuad; loop: true; dir: alternate">
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 4">
+            <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.1 0.1 0.1" src="#earth"
+                animation="property: position; to: 0 0.1 0.5; dur: 10000; easing: easeInOutQuad; loop: true; dir: alternate">
+        </a-entity>
+    </a-scene>
+</body>
+
+</html>

@@ -1,0 +1,354 @@
+<!--- Modified code --->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Dashboard</title>
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+		integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+	<link rel="stylesheet" href="/sweetalert2/sweetalert2.css" />
+	<link rel="stylesheet" href="/css/superadmin.dashboard.css" />
+</head>
+
+<body>
+	<div id="body">
+		<div class="overlay">
+			<div style="position: relative" class="">
+				<ul id="slide-out" class="sidenav sidenav-fixed">
+					<li class="logo">
+						<a class="navbar-brand" href="#">
+							<img src="/images/Group 245.svg" alt="" />
+						</a>
+					</li>
+					<li style="height: 5%"></li>
+
+					<li>
+						<a class="waves-effect waves-teal flex" href="/super-admin-dashboard">
+							<div class="flex-sidenav">
+								<div class="sidenav-icon">
+									<i class="fa fas fa-solid fa-user-tie" style="color: #787FF6; padding:5px;"></i>
+								</div>
+								<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px;">Dashboard</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="waves-effect waves-teal flex checked" href="/sales-admins">
+							<div class="flex-sidenav">
+								<div class="sidenav-icon">
+									<img class="sidenav-icon-img" src="/images/Vector (1).svg" />
+								</div>
+								<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px;">Sales Admin</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="waves-effect waves-teal flex" href="/clients">
+							<div class="flex-sidenav">
+								<div class="sidenav-icon">
+									<img class="sidenav-icon-img" src="/images/Vector.svg" />
+								</div>
+								<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px;">Clients</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="waves-effect waves-teal flex" href="/dashboard">
+							<div class="flex-sidenav">
+								<div class="sidenav-icon">
+									<img class="sidenav-icon-img" src="/images/HomeActive.png" />
+								</div>
+								
+								<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px;"> Home</div>
+							</div>
+						</a>
+					</li>
+					<a class="logout-btn" href="/logout">
+						<div class="logout-btn2" style="position: relative; top: 300px; right: 10px;">
+							<div class="sidenav-icon">
+								<img class="logoutimage" style="position: relative; right: 40px; top: 28px;"  src="/images/logout.png"  />
+							</div>
+							<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px; color: black;">Logout</div>
+						</div>
+					</a>
+					<!-- 
+					<li>
+						<a class="waves-effect waves-teal flex" href="#!">
+							<div class="flex-sidenav">
+								<div class="sidenav-icon">
+									<img class="sidenav-icon-img" src="/images/Path 229.svg" />
+								</div>
+								<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px;">Settings</div>
+							</div>
+						</a>
+					</li>
+					-->
+				</ul>
+			</div>
+			<div class="body">
+				<nav class="navbar">
+					<div class="container-fluid evenly">
+						<div class="component" style="width: 40%">
+							<div class="form">
+								<div class="mt-3 inputs">
+									<img src="/images/Path 220.svg" />
+									<input type="text" class="form-control"
+										 placeholder="Search by date & Oraganization name" />
+								</div>
+							</div>
+						</div>
+						<div class="component waves-effect acc" style="margin-right: 30px">
+							<div class="flex account" >
+								<img src="/images/Vectorz.svg" class="logo-acc" />
+								<div class="name-postion-tag flex">
+									<div class="name"  >Super Admin</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</nav>
+				<div class="sales-admin" >
+					<div class="sales-admin-header flex">
+						<div class="sales-header-text" style=" font-family: 'Poppins', sans-serif; font-size: 28px;">Sales Admins</div>
+						<a class="modal-trigger" href="#modal1">
+							<div class="sales-header-text waves-effect cbtn" style="font-family: sans-serif; font-size: 15px;">
+								Add New Sales Admin
+							</div>
+						</a>
+						<div id="modal1" class="modal">
+							<div class="modal-content">
+								<h4 class="model-title" >Add new Sales Admin</h4>
+								<div class="input-field col s12">
+									<input id="userName" type="text" class="validate" />
+									<label for="name" placeholder="Name">Name</label>
+								</div>
+								<div class="input-field col s12">
+									<input id="adminEmail" type="email" class="validate" />
+									<label for="email" placeholder="email">Email</label>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<a href="javascript:void(0)" id="addSalesAdminBtn" class="modal-close waves-effect waves-light cbtn"
+									style="width: 25%">Add User</a>
+							</div>
+						</div>
+					</div>
+					<div class="sales-admin-body">
+						<!-- <div class="sales-admin-account">
+							<div class="sales-more waves-effect dropdown-trigger" data-target="dropdown1">
+								<img src="/images/Group 295.svg" alt="" />
+							</div>
+							<ul id="dropdown1" class="dropdown-content">
+								<li class="list-body">
+									<a href="#!" style="display: flex; align-items: center; color: #02111b">
+										<img src="/images/Vectori.svg" class="dd-icon" />More&nbsp;Details
+									</a>
+								</li>
+								<li class="list-body">
+									<a href="#!" style="display: flex; align-items: center; color: red">
+										<img src="/images/Groupr.svg" class="dd-icon" />Remove&nbsp;Admin
+									</a>
+								</li>
+							</ul>
+							<div class="sales-acc">
+								<div class="sale-acc-logo">
+									<div class="logo sample"></div>
+								</div>
+								<div class="sales-acc-detail">
+									<div class="sales-acc-name-text">Name</div>
+									<div class="sales-acc-name-email">name@gmail.com</div>
+								</div>
+							</div>
+							<div class="sales-account-dets">
+								<div class="cstmr-counts">
+									<div class="cstmr-num">120</div>
+									<div class="cstmr-num-text">Total customers</div>
+								</div>
+								<div class="sales-price">
+									<div class="sales-price-num">65000</div>
+									<div class="sales-price-num-text">
+										Total Revenue Generate
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="sales-admin-account">
+							<div class="sales-more waves-effect dropdown-trigger" data-target="dropdown2">
+								<img src="/images/Group 295.svg" alt="" />
+							</div>
+							<ul id="dropdown2" class="dropdown-content">
+								<li class="list-body">
+									<a href="#!" style="display: flex; align-items: center; color: #02111b">
+										<img src="/images/Vectori.svg" class="dd-icon" />More&nbsp;Details
+									</a>
+								</li>
+								<li class="list-body">
+									<a href="#!" style="display: flex; align-items: center; color: red">
+										<img src="/images/Groupr.svg" class="dd-icon" />Remove&nbsp;Admin
+									</a>
+								</li>
+							</ul>
+							<div class="sales-acc">
+								<div class="sale-acc-logo">
+									<div class="logo sample"></div>
+								</div>
+								<div class="sales-acc-detail">
+									<div class="sales-acc-name-text">Name</div>
+									<div class="sales-acc-name-email">name@gmail.com</div>
+								</div>
+							</div>
+							<div class="sales-account-dets">
+								<div class="cstmr-counts">
+									<div class="cstmr-num">120</div>
+									<div class="cstmr-num-text">Total customers</div>
+								</div>
+								<div class="sales-price">
+									<div class="sales-price-num">65000</div>
+									<div class="sales-price-num-text">
+										Total Revenue Generate
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="sales-admin-account">
+							<div class="sales-more waves-effect dropdown-trigger" data-target="dropdown3">
+								<img src="/images/Group 295.svg" alt="" />
+							</div>
+							<ul id="dropdown3" class="dropdown-content">
+								<li class="list-body">
+									<a href="#!" style="display: flex; align-items: center; color: #02111b">
+										<img src="/images/Vectori.svg" class="dd-icon" />More&nbsp;Details
+									</a>
+								</li>
+								<li class="list-body">
+									<a href="#!" style="display: flex; align-items: center; color: red">
+										<img src="/images/Groupr.svg" class="dd-icon" />Remove&nbsp;Admin
+									</a>
+								</li>
+							</ul>
+							<div class="sales-acc">
+								<div class="sale-acc-logo">
+									<div class="logo sample"></div>
+								</div>
+								<div class="sales-acc-detail">
+									<div class="sales-acc-name-text">Name</div>
+									<div class="sales-acc-name-email">name@gmail.com</div>
+								</div>
+							</div>
+							<div class="sales-account-dets">
+								<div class="cstmr-counts">
+									<div class="cstmr-num">120</div>
+									<div class="cstmr-num-text">Total customers</div>
+								</div>
+								<div class="sales-price">
+									<div class="sales-price-num">65000</div>
+									<div class="sales-price-num-text">
+										Total Revenue Generate
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="sales-admin-account">
+							<div class="sales-more waves-effect dropdown-trigger" data-target="dropdown4">
+								<img src="/images/Group 295.svg" alt="" />
+							</div>
+							<ul id="dropdown4" class="dropdown-content">
+								<li class="list-body">
+									<a href="#!" style="display: flex; align-items: center; color: #02111b">
+										<img src="/images/Vectori.svg" class="dd-icon" />More&nbsp;Details
+									</a>
+								</li>
+								<li class="list-body">
+									<a href="#!" style="display: flex; align-items: center; color: red">
+										<img src="/images/Groupr.svg" class="dd-icon" />Remove&nbsp;Admin
+									</a>
+								</li>
+							</ul>
+							<div class="sales-acc">
+								<div class="sale-acc-logo">
+									<div class="logo sample"></div>
+								</div>
+								<div class="sales-acc-detail">
+									<div class="sales-acc-name-text">Name</div>
+									<div class="sales-acc-name-email">name@gmail.com</div>
+								</div>
+							</div>
+							<div class="sales-account-dets">
+								<div class="cstmr-counts">
+									<div class="cstmr-num">120</div>
+									<div class="cstmr-num-text">Total customers</div>
+								</div>
+								<div class="sales-price">
+									<div class="sales-price-num">65000</div>
+									<div class="sales-price-num-text">
+										Total Revenue Generate
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="sales-admin-account">
+							<div class="sales-more waves-effect dropdown-trigger" data-target="dropdown5">
+								<img src="/images/Group 295.svg" alt="" />
+							</div>
+							<ul id="dropdown5" class="dropdown-content">
+								<li class="list-body">
+									<a href="#!" style="display: flex; align-items: center; color: #02111b">
+										<img src="/images/Vectori.svg" class="dd-icon" />More&nbsp;Details
+									</a>
+								</li>
+								<li class="list-body">
+									<a href="#!" style="display: flex; align-items: center; color: red">
+										<img src="/images/Groupr.svg" class="dd-icon" />Remove&nbsp;Admin
+									</a>
+								</li>
+							</ul>
+							<div class="sales-acc">
+								<div class="sale-acc-logo">
+									<div class="logo sample"></div>
+								</div>
+								<div class="sales-acc-detail">
+									<div class="sales-acc-name-text">Name</div>
+									<div class="sales-acc-name-email">name@gmail.com</div>
+								</div>
+							</div>
+							<div class="sales-account-dets">
+								<div class="cstmr-counts">
+									<div class="cstmr-num">120</div>
+									<div class="cstmr-num-text">Total customers</div>
+								</div>
+								<div class="sales-price">
+									<div class="sales-price-num">65000</div>
+									<div class="sales-price-num-text">
+										Total Revenue Generate
+									</div>
+								</div>
+							</div>
+						</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+		integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-storage.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc"></script>
+	<script src="./js/firebase-config.js"></script>
+	<script src="/sweetalert2/sweetalert2.js"></script>
+	<script src="/js/superadmin.dashboard.js"></script>
+</body>
+
+</html>

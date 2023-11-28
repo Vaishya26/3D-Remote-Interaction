@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>AjnaBuild AR Mode</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<link type="text/css" rel="stylesheet" href="/css/main.css">
+	</head>
+	<body>
+        <div id="video">
+			<div id="local_stream" class="video-placeholder"></div>
+			<div id="local_video_info" class="video-profile hide"></div>
+			<div id="video_autoplay_local" class="autoplay-fallback hide"></div>
+		</div>
+		
+		<div id="info">
+			Ajna AR
+		</div>
+		<script>
+			<% if (room != null) { %>
+					window.room = <%= room %>;
+					alert("Your Room id is " + room);
+    		<% }%>
+		</script>
+
+		<!-- CDN for PDF.js -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
+
+		<!-- Firbase CDNs and Cookie -->
+		<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+		<script src="/js/firebase-config.js"></script>
+		
+		<!-- global variables -->
+		<script>
+			const roomName = room;
+			var displayName;
+			var photoURL;
+			var uid_firebase;
+			var database;
+			var currentPdfObject = null;
+			var pageNum = 1;
+			const videoSupportedFormats = ['mp4', 'ogg', 'webm','mov'];
+			const imageSupportedFormats = ['jpg', 'jpeg', 'img', 'png'];
+			const docSupportedFormats = ['pdf'];
+
+			// For Agora
+			var rtc = {
+				client: null,
+				joined: false,
+				published: false,
+				localStream: null,
+				remoteStreams: [],
+				params: {}
+			};
+
+			// Options for joining a channel
+			var option = {
+				appID: "4eaf6af19634446f96b497a475976a25",
+				channel: roomName.toString(),
+				uid: null,
+				token: null
+			};
+		</script>
+
+		<!-- <script src="/socket.io/socket.io.js"></script> -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+		<!-- Agora CDN -->
+		<script src="https://cdn.agora.io/sdk/release/AgoraRTCSDK-3.1.2.js"></script>
+
+		<script type="module">
+
+            import * as THREE from '/three/build/three.module.js';
+			import { TubePainter } from '/three/jsm/misc/TubePainter.js';
+            import { ARButton } from '/three/jsm/webxr/ARButton.js';
+			import { GLTFLoader } from '/three/jsm/loaders/GLTFLoader.js';
+        
+
+			var container;
+			var camera, scene, renderer, loader_font;
+			var controller, painter;
+			var cursor = new THREE.Vector3();
+			var mesh_local, mesh_remote,group;
+			var remote_x = -0.3;
+			var arrowCounter = 0;
+			var playVideo = false;
+			var baseUrl = "https://firebasestorage.googleapis.com/v0/b/ajnabuild-cb49d.appspot.com/o/models%2F";
+    		var token = "?alt=media&token=c40c0d68-6293-410b-aa40-daee0b3a08e6";
+
+			init();
+			firebaseConfigure();
+			animate();
+			function init() {
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				scene = new THREE.Scene();
+				camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
+				group = new THREE.Group();
+      			scene.add(group);
+
+				loader_font = new THREE.FontLoader();
+				
+				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.xr.enabled = true;
+				container.appendChild( renderer.domElement );
+
+				document.body.appendChild( ARButton.createButton( renderer ) );
+
+				var light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
+				light.position.set( 0, 1, 0 );
+				scene.add( light );
+				var flagLight = new THREE.DirectionalLight(0xffffff, 1);
+				flagLight.position.set(0, 0, 500);
+				scene.add(flagLight);
+
+				// // AR Paint
+				// painter = new TubePainter();
+				// painter.setSize( 0.4 );
+				// painter.mesh.material.side = THREE.DoubleSide;
+				// scene.add( painter.mesh );
+
+				// For AR Painr
+				// function onSelectStart() {
+				// 	this.userData.isSelecting = true;
+				// 	this.userData.skipFrames = 2;
+				// }
+
+				// function onSelectEnd() {
+				// 	this.userData.isSelecting = false;
+				// }
+
+				function onSelect() {
+					var path = baseUrl + "scene1.glb" + token;
+					var arrow_name = "arrow" + arrowCounter;
+					arrowCounter += 1;
+					loadArrow(path, 0, 0, -0.3, 0,0,0,0,1,1,1, arrow_name,controller.matrixWorld,arrowCounter); 
+					// sendRoomArrow(path,0,0,-0.3, 0,0,0,0,1,1,1, arrow_name,arrowCounter,room); 
+				}
+
+				controller = renderer.xr.getController( 0 );
+				// For AR Paint
+				// controller.addEventListener( 'selectstart', onSelectStart );
+				// controller.addEventListener( 'selectend', onSelectEnd );
+				controller.addEventListener( 'select', onSelect );
+				controller.userData.skipFrames = 0;
+				scene.add( controller );
+
+				window.addEventListener( 'resize', onWindowResize, false );
+				console.log("init completed");
+			}
+
+			// For loading gltf models
+			function loadModels(url, px, py, pz, qx, qy, qz, qw, sx, sy, sz, modelName) {
+				console.log("Inside load function");
+					var path = url;
+					const loader = new GLTFLoader();
+					
+					const onLoad = (gltf, position) => {
+						const model = gltf.scene;
+						
+						model.traverse(function (node) {
+
+							if (node.isMesh || node.isLight) node.castShadow = true;
+							if (node.isMesh || node.isLight) node.receiveShadow = true;
+
+						});
+						model.scale.set(sx, sy, sz);
+						model.name = modelName;
+						model.position.copy(position); //to set position using px,py,pz
+						model.quaternion.x = qx;
+						model.quaternion.y = qy;
+						model.quaternion.z = qz;
+						model.quaternion.w = qw;
+						
+						// model.position.set( x,y,z ).applyMatrix4( matrix4 );
+						console.log(model.position);
+						// const animation = gltf.animations[0];
+						// const mixer = new THREE.AnimationMixer(model);
+						// mixers.push(mixer);
+						// if (animation) {
+						// 	const action = mixer.clipAction(animation);
+						// 	action.play();
+						// }
+						// if (modelName == "cow") {
+						// 	model.rotation.y = -1.1;
+						// }
+						scene.add(model);
+					};
+					// the loader will report the loading progress to this function
+					const onProgress = (xhr) => {console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); };
+					// the loader will send any error messages to this function, and we'll log
+					// them to to console
+					const onError = (errorMessage) => { console.log(errorMessage); };
+					// load the first model. Each model is loaded asynchronously,
+					const position = new THREE.Vector3(px, py, pz);
+					loader.load(path, gltf => onLoad(gltf, position), onProgress, onError);
+				}
+
+			// for loading arrows
+			function loadArrow(url, px, py, pz, qx, qy, qz, qw, sx, sy, sz, modelName,matrix4,arrowcount) {
+				console.log("Inside load function");
+					var path = url;
+					const loader = new GLTFLoader();
+					
+					const onLoad = (gltf, position) => {
+						const model = gltf.scene;
+						
+						model.scale.set(sx, sy, sz);
+						
+						model.traverse(function (node) {
+
+							if (node.isMesh || node.isLight) node.castShadow = true;
+							if (node.isMesh || node.isLight) node.receiveShadow = true;
+
+						});
+						model.name = modelName;
+						// model.position.copy(position); //to set position using x,y,z
+						
+						model.position.set( px,py,pz ).applyMatrix4( matrix4 );
+						// scene.add(model); #Not adding arrow to scene because it will be added automatically once firebase event is called
+						sendRoomArrow(
+							path, 
+							model.position.x, 
+							model.position.y, 
+							model.position.z,
+							model.quaternion.x,
+							model.quaternion.y,
+							model.quaternion.z,
+							model.quaternion.w,
+							model.scale.x,
+							model.scale.y,
+							model.scale.z,
+							modelName, 
+							arrowcount, 
+							room); 
+						
+					};
+					// the loader will report the loading progress to this function
+					const onProgress = (xhr) => {console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); };
+					// the loader will send any error messages to this function, and we'll log
+					// them to to console
+					const onError = (errorMessage) => { console.log(errorMessage); };
+					// load the first model. Each model is loaded asynchronously,
+					const position = new THREE.Vector3(px, py, pz);
+					loader.load(path, gltf => onLoad(gltf, position), onProgress, onError);
+				}
+
+			function receiveTransformModel(px, py, pz, qx, qy, qz, qw, sx, sy, sz, modelName) {
+				console.log("updating position");
+				var model = scene.getObjectByName(modelName);
+				var quaternion = new THREE.Quaternion();
+				quaternion.set(qx, qy, qz, qw);
+				var euler = new THREE.Euler();
+				euler.setFromQuaternion(quaternion);
+				// positions
+				model.position.x = px;
+				model.position.y = py;
+				model.position.z = pz;
+				// rotations
+				model.rotation.x = euler.x;
+				model.rotation.y = euler.y;
+				model.rotation.z = euler.z;
+				// scales
+				model.scale.x = sx;
+				model.scale.y = sy;
+				model.scale.z = sz;
+
+				}
+
+			function deleteModels(modelName) {
+				scene.traverse(function (child) {
+					if (child.name == modelName) {
+						scene.remove(child);	
+					}
+				});
+				// var deleteM = scene.getObjectByName(modelName);
+				// scene.remove(deleteM);
+			}
+
+			function sendRoomArrow(path, px, py, pz, qx, qy, qz, qw, sx, sy, sz, modelName,arrowCount,room) {
+				console.log('Client sending arrow: ', path, px, py, pz, qx, qy, qz, qw, sx, sy, sz, modelName,arrowCount,room);
+				database.ref('rooms/' + room + '/' +modelName).set({
+					url: path,
+					px: px.toFixed(6),
+					py: py.toFixed(6),
+					pz: pz.toFixed(6),
+					qx: qx.toFixed(6),
+					qy: qy.toFixed(6),
+					qz: qz.toFixed(6),
+					qw: qw.toFixed(6),
+					sx: sx.toFixed(6),
+					sy: sy.toFixed(6),
+					sz: sz.toFixed(6),
+					modelName:modelName,
+					nextArrowCount:arrowCount
+				},function(error){
+					if(error){
+					console.log(error);
+					}
+					else{
+					console.log('Host sent model to firebase Server: ', path, px, py, pz, qx, qy, qz, qw, sx, sy, sz, modelName,arrowCount,room);
+					}
+				});
+			}
+			
+			function loadImage(url, px, py, pz, qx, qy, qz, qw, sx, sy, sz, fileName) {
+					var textureImage = new THREE.TextureLoader().load(url);
+					var geomImage = new THREE.PlaneGeometry(0.3, 0.2);
+					var materialImage = new THREE.MeshBasicMaterial({ map: textureImage });
+					var meshImage = new THREE.Mesh(geomImage, materialImage);
+					meshImage.name = fileName;
+					var imageCustomData = { "type": "image" };
+					meshImage.userData = imageCustomData;
+					scene.add(meshImage);
+					meshImage.position.x = px;
+					meshImage.position.y = py;
+					meshImage.position.z = pz;
+					meshImage.quaternion.x = qx;
+					meshImage.quaternion.y = qy;
+					meshImage.quaternion.z = qz;
+					meshImage.quaternion.w = qw;
+					meshImage.scale.set(sx, sy, sz);
+
+				}
+
+			function loadVideo(url, px, py, pz, qx, qy, qz, qw, sx, sy, sz, fileName) {
+				var videoElem = document.createElement('video');
+				videoElem.id = fileName;
+				videoElem.crossOrigin = "anonymous"
+				videoElem.src = url;
+				videoElem.load(); // must call after setting/changing source
+				videoElem.style.display = "none";
+				// videoElem.play();
+
+				var textureVideoElem = new THREE.VideoTexture(videoElem);
+				var geometryVideoElem = new THREE.PlaneGeometry(0.3, 0.2);
+				var materialVideoElem = new THREE.MeshBasicMaterial({ map: textureVideoElem });
+				var meshVideoElem = new THREE.Mesh(geometryVideoElem, materialVideoElem);
+				meshVideoElem.name = fileName;
+
+				var videoCustomData = { "type": "image" };
+				meshVideoElem.userData = videoCustomData;
+				scene.add(meshVideoElem);
+				meshVideoElem.position.x = px;
+				meshVideoElem.position.y = py;
+				meshVideoElem.position.z = pz;
+				meshVideoElem.quaternion.x = qx;
+				meshVideoElem.quaternion.y = qy;
+				meshVideoElem.quaternion.z = qz;
+				meshVideoElem.quaternion.w = qw;
+				meshVideoElem.scale.set(sx, sy, sz);
+				document.body.appendChild(videoElem);
+				}
+
+			function loadDoc(url, px, py, pz, qx, qy, qz, qw, sx, sy, sz, fileName) {
+
+				var canvasDoc = document.createElement('canvas');
+				canvasDoc.id = fileName;
+				var textureDoc = new THREE.CanvasTexture(canvasDoc);
+				var geometryDoc = new THREE.PlaneGeometry(0.2, 0.3);
+				var materialDoc = new THREE.MeshBasicMaterial({ map: textureDoc });
+				var meshDoc = new THREE.Mesh(geometryDoc, materialDoc);
+				meshDoc.name = fileName;
+
+				var docCustomData = { "type": "image" };
+				meshDoc.userData = docCustomData;
+				scene.add(meshDoc);
+				meshDoc.position.x = px;
+				meshDoc.position.y = py;
+				meshDoc.position.z = pz;
+				meshDoc.quaternion.x = qx;
+				meshDoc.quaternion.y = qy;
+				meshDoc.quaternion.z = qz;
+				meshDoc.quaternion.w = qw;
+				meshDoc.scale.set(sx, sy, sz);
+				document.body.appendChild(canvasDoc);
+				pdfjsLib.getDocument(url).promise.then(function (pdf) {
+					currentPdfObject = pdf;
+					console.log(currentPdfObject);
+					renderPage(fileName, pageNum);
+					});
+				}
+
+			function renderPage(file, num) {
+				currentPdfObject.getPage(num).then(function (page) {
+					console.log('Page loaded');
+
+					var scale = 3;
+					var viewport = page.getViewport({ scale: scale });
+
+					// Prepare canvas using PDF page dimensions
+					var canvasElem = document.getElementById(file);
+					var context = canvasElem.getContext('2d');
+					canvasElem.height = viewport.height;
+					canvasElem.width = viewport.width;
+
+					// Render PDF page into canvas context
+					var renderContext = {
+						canvasContext: context,
+						viewport: viewport
+					};
+					var renderTask = page.render(renderContext);
+					renderTask.promise.then(function () {
+						var canvasMesh = scene.getObjectByName(file);
+						canvasMesh.material.map = new THREE.CanvasTexture(canvasElem);
+						canvasMesh.material.needsUpdate = true;
+					});
+
+				});
+			}
+			
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+
+			function sendUID(uid, screen, video) {
+					database.ref('currentUsers/' + uid).set({
+						screen: screen,
+						video: video,
+						name: displayName,
+						photo: photoURL
+					}, function (error) {
+						if (error) {
+							console.log(error);
+						}
+						else {
+							console.log("user details added on firebase");
+						}
+					});
+				}
+			
+            // receive handle controller
+            function receivehandleController(controller) {
+				cursor.set(0, 0, - 0.2).applyMatrix4(controller.matrixWorld);
+				if (userData.skipFrames >= 0) {
+					// TODO(mrdoob) Revisit this
+					userData.skipFrames--;
+					painter.moveTo(cursor);
+				} else {
+					painter.lineTo(cursor);
+					painter.update();
+				}
+			}
+            
+            
+            // func() handleController..
+			function handleController( controller ) {
+				var userData = controller.userData;
+				cursor.set( 0, 0, - 0.2 ).applyMatrix4( controller.matrixWorld );
+				if ( userData.isSelecting === true ) {
+                    sendArrow(controller.matrixWorld,userData.skipFrames,room);
+					if ( userData.skipFrames >= 0 ) {
+						// TODO(mrdoob) Revisit this
+						userData.skipFrames --;
+						painter.moveTo( cursor );
+					} else {
+						painter.lineTo( cursor );
+						painter.update();
+					}
+				}
+			}
+
+			function animate() {
+				renderer.setAnimationLoop( render );
+			}
+
+			function render() {
+				// handleController(controller);
+				renderer.render(scene, camera);
+			}
+//-----------------------------------------------------connect starts here------------------------------------------------------
+			
+
+			function connect() {
+
+				// Create a client
+				rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+
+				// Initialize the client
+				rtc.client.init(option.appID, function () {
+					console.log("init success");
+
+					// Join a channel
+					rtc.client.join(option.token, option.channel, option.uid, function (uidserver) {
+						console.log("join channel: " + option.channel);
+						rtc.params.vuid = uidserver;
+						console.log("User Id - "+uidserver);
+						
+						rtc.localStream = AgoraRTC.createStream({
+							streamID: uidserver,
+							audio: true,
+							video: false,
+							screen: false,
+						});
+
+						// Initialize the local stream
+						rtc.localStream.init(function () {
+							console.log("init local stream success");
+							// play stream (only audio) with html element id "local_stream"
+							rtc.localStream.play("local_stream");
+							// Publish the local stream
+							sendUID(uidserver,"false","false");
+							rtc.client.publish(rtc.localStream, function (err) {
+								console.log("publish failed");
+								console.error(err);
+							});
+						}, function (err) {
+							console.error("init local stream failed ", err);
+						});
+
+						
+
+					}, function (err) {
+					console.error("client join failed", err);
+					});
+
+				}, (err) => {
+					console.error(err);
+				});
+
+
+				rtc.client.on("stream-added", function (evt) {
+					var remoteStream = evt.stream;
+					var id = remoteStream.getId();
+					if (id !== rtc.params.vuid) {
+						rtc.client.subscribe(remoteStream, function (err) {
+							console.log("stream subscribe failed", err);
+						});
+					}
+					console.log("stream-added remote-uid: ", id);
+				});
+
+				rtc.client.on("stream-subscribed", function (evt) {
+					var remoteStream = evt.stream;
+					var id = remoteStream.getId();
+					
+					database.ref('currentUsers').child(id.toString()).once('value', function (dataSnapshot) {
+						if (dataSnapshot.exists()) {
+							// alert('exists');
+
+							database.ref('currentUsers/').orderByKey().equalTo(id.toString()).once("child_added", function (snapshot) {
+
+								if (snapshot.val().video == "true") {
+
+									// Add a view for the remote stream.
+									addView(id);
+
+									// Play the remote stream.
+									remoteStream.play("remote_video_" + id);
+									//video
+									var video = document.getElementById("video" + id);
+									var texture_remote = new THREE.VideoTexture(video);
+									var geometry_remote = new THREE.PlaneGeometry(0.25, 0.15); 
+									var material_remote = new THREE.MeshBasicMaterial({ map: texture_remote});
+									mesh_remote = new THREE.Mesh(geometry_remote, material_remote);
+
+									//audio icon
+									var texture_icon = new THREE.TextureLoader().load("images/mic_on.png");
+									var geom_icon = new THREE.CircleGeometry(0.01, 32);
+									var material_icon = new THREE.MeshBasicMaterial({ map: texture_icon,color:0x000000 });
+									var mesh_icon = new THREE.Mesh(geom_icon, material_icon);
+									remote_x += 0.3;
+
+									mesh_icon.name = id + "audiostat";
+									mesh_remote.name = id;
+									group.add(mesh_remote);
+									group.add(mesh_icon);
+
+									mesh_remote.position.set(remote_x, 0, - 0.6).applyMatrix4(controller.matrixWorld);
+									mesh_remote.quaternion.setFromRotationMatrix(controller.matrixWorld);
+
+									mesh_icon.position.set(remote_x - 0.06 , -0.1, - 0.6).applyMatrix4(controller.matrixWorld);
+									mesh_icon.quaternion.setFromRotationMatrix(controller.matrixWorld);
+
+
+									//displayname
+									loader_font.load('font.json', function (font) {
+										var textName = snapshot.val().name;
+										var geom_text = new THREE.TextGeometry("hello world", {
+											font: font,
+											size: 1,
+											height: 1,
+											curveSegments: 12,
+											bevelEnabled: true,
+										});
+
+										var material_text = new THREE.MeshBasicMaterial({ color: 0x000000 });
+										var mesh_text = new THREE.Mesh(geom_text, material_text);
+										mesh_text.name = id + "text";
+										group.add(mesh_text);
+										// var loadedScreen = group.getObjectByName(id);
+										mesh_text.position.set(-0.3 , -0.1, - 0.3).applyMatrix4(controller.matrixWorld);
+										mesh_text.quaternion.setFromRotationMatrix(controller.matrixWorld);
+									});
+
+
+								}
+								else if (snapshot.val().screen == "true") {
+									// Add a view for the remote stream.
+									addView(id);
+
+									// Play the remote stream.
+									remoteStream.play("remote_video_" + id);
+
+									//video
+									var videoScreen = document.getElementById("video" + id);
+									var texture_screen = new THREE.VideoTexture(videoScreen);
+									var geometry_screen = new THREE.PlaneGeometry(0.5, 0.4);
+									var material_screen = new THREE.MeshBasicMaterial({ map: texture_screen });
+									var mesh_screen = new THREE.Mesh(geometry_screen, material_screen);
+									mesh_screen.name = id;
+									var screenCustomData = { "type": "screen" };
+									mesh_screen.userData = screenCustomData;
+									scene.add(mesh_screen);
+									mesh_screen.position.set(-0.3, 0.3, - 0.6).applyMatrix4(controller.matrixWorld);
+									mesh_screen.quaternion.setFromRotationMatrix(controller.matrixWorld);
+									mesh_screen.rotation.y = 0.4;
+
+									
+								}
+
+
+							});
+
+						}
+						else {
+							// Add a view for the remote stream.
+							addView(id);
+
+							// Play the remote stream.
+							remoteStream.play("remote_video_" + id);
+							//video
+							var video = document.getElementById("video" + id);
+							var texture_remote = new THREE.VideoTexture(video);
+							var geometry_remote = new THREE.PlaneGeometry(0.2, 0.1);
+							var material_remote = new THREE.MeshBasicMaterial({ map: texture_remote });
+							mesh_remote = new THREE.Mesh(geometry_remote, material_remote);
+
+							//audio icon
+							var texture_icon = new THREE.TextureLoader().load("images/mic_on.png");
+							var geom_icon = new THREE.CircleGeometry(0.01, 32);
+							var material_icon = new THREE.MeshBasicMaterial({ map: texture_icon});
+							var mesh_icon = new THREE.Mesh(geom_icon, material_icon);
+							remote_x += 0.3;
+
+							mesh_icon.name = id + "audiostat";
+							mesh_remote.name = id;
+							group.add(mesh_remote);
+							group.add(mesh_icon);
+
+							mesh_remote.position.set(remote_x, 0, - 0.6).applyMatrix4(controller.matrixWorld);
+							mesh_remote.quaternion.setFromRotationMatrix(controller.matrixWorld);
+
+							mesh_icon.position.set(remote_x - 0.06, -0.065, - 0.6).applyMatrix4(controller.matrixWorld);
+							mesh_icon.quaternion.setFromRotationMatrix(controller.matrixWorld);
+
+						}
+					});
+
+
+					console.log("stream-subscribed remote-uid: ", id);
+				});
+
+				rtc.client.on("stream-removed", function (evt) {
+					var remoteStream = evt.stream;
+					var id = remoteStream.getId();
+					// Stop playing the remote stream.
+					remoteStream.stop("remote_video_" + id);
+					// Remove the view of the remote stream. 
+
+					console.log("Removing Stream-----------------------")
+					removeView(id);
+					var object = group.getObjectByName(id);
+					group.remove(object);
+					console.log("stream-removed remote-uid: ", id);
+				});
+				
+				rtc.client.on("peer-leave", function(evt) {
+					var remoteStream = evt.stream;
+					var id = remoteStream.getId();
+					remoteStream.stop("remote_video_" + id);
+					// Remove the view of the remote stream. 
+					console.log("Removing Stream-----------------------")
+					removeView(id);
+					var object = group.getObjectByName(id);
+					group.remove(object);
+					console.log("stream-removed remote-uid: ", id);
+				});
+
+				rtc.client.on("mute-audio", function (evt) {
+					console.log(evt.uid + "mutes Audio");
+					var unmuted_icon_mesh = group.getObjectByName(evt.uid + "audiostat");
+					if (unmuted_icon_mesh) {
+						unmuted_icon_mesh.material.map = new THREE.TextureLoader().load("images/mic_off.png");
+						unmuted_icon_mesh.material.needsUpdate = true;
+					}
+					// window.alert(evt.uid + "muted Audio");
+				});
+
+				rtc.client.on("unmute-audio", function (evt) {
+					console.log(evt.uid + "unmutes Audio");
+					var muted_icon_mesh = group.getObjectByName(evt.uid + "audiostat");
+					if (muted_icon_mesh) {
+						muted_icon_mesh.material.map = new THREE.TextureLoader().load("images/mic_on.png");
+						muted_icon_mesh.material.color = 0x000000;
+						muted_icon_mesh.material.needsUpdate = true;
+					}
+					// window.alert(evt.uid + "unmuted Audio");
+				});
+
+
+				rtc.client.on("mute-video", function (evt) {
+					console.log(evt.uid + "mutes video");
+					var id = evt.uid;
+					var muted_video_mesh = group.getObjectByName(id);
+					if (muted_video_mesh) {
+						database.ref('currentUsers/').orderByKey().equalTo(id.toString()).once('child_added').then(function (snapshot) {
+							// var profilePic = (snapshot.val() && snapshot.val().photo) || 'Anonymous';
+							if (snapshot.val()) {
+								muted_video_mesh.material.map = new THREE.TextureLoader().load(snapshot.val().photo);
+								muted_video_mesh.material.needsUpdate = true;
+							}
+
+						});
+					}
+					// window.alert(evt.uid + "muted video");
+				});
+
+				rtc.client.on("unmute-video", function (evt) {
+					console.log(evt.uid + "unmutes video");
+					var unmuted_video_mesh = group.getObjectByName(evt.uid);
+					if (unmuted_video_mesh) {
+						var unmuted_video = document.getElementById("video" + evt.uid);
+						unmuted_video_mesh.material.map = new THREE.VideoTexture(unmuted_video);
+						unmuted_video_mesh.material.needsUpdate = true;
+					}
+					// window.alert(evt.uid + "unmuted video");
+				});
+
+
+
+				//firebase events..........
+				database.ref('rooms/'+room).on('child_added',snapshot =>{
+            
+					console.log("-----------client received and loading model-------------");
+					console.log(snapshot.val());
+				
+					if (imageSupportedFormats.includes(snapshot.val().fileType)) {
+						//loadImage
+						loadImage(
+							snapshot.val().url,
+							parseFloat(snapshot.val().px),
+							parseFloat(snapshot.val().py),
+							parseFloat(snapshot.val().pz),
+							parseFloat(snapshot.val().qx),
+							parseFloat(snapshot.val().qy),
+							parseFloat(snapshot.val().qz),
+							parseFloat(snapshot.val().qw),
+							parseFloat(snapshot.val().sx),
+							parseFloat(snapshot.val().sy),
+							parseFloat(snapshot.val().sz),
+							snapshot.val().modelName
+						);
+					}
+					else if (videoSupportedFormats.includes(snapshot.val().fileType)) {
+						//loadVideo
+						loadVideo(
+							snapshot.val().url,
+							parseFloat(snapshot.val().px),
+							parseFloat(snapshot.val().py),
+							parseFloat(snapshot.val().pz),
+							parseFloat(snapshot.val().qx),
+							parseFloat(snapshot.val().qy),
+							parseFloat(snapshot.val().qz),
+							parseFloat(snapshot.val().qw),
+							parseFloat(snapshot.val().sx),
+							parseFloat(snapshot.val().sy),
+							parseFloat(snapshot.val().sz),
+							snapshot.val().modelName
+						);
+					}
+					else if (docSupportedFormats.includes(snapshot.val().fileType)) {
+						//loaddocument
+						loadDoc(
+							snapshot.val().url,
+							parseFloat(snapshot.val().px),
+							parseFloat(snapshot.val().py),
+							parseFloat(snapshot.val().pz),
+							parseFloat(snapshot.val().qx),
+							parseFloat(snapshot.val().qy),
+							parseFloat(snapshot.val().qz),
+							parseFloat(snapshot.val().qw),
+							parseFloat(snapshot.val().sx),
+							parseFloat(snapshot.val().sy),
+							parseFloat(snapshot.val().sz),
+							snapshot.val().modelName
+						);
+					}
+
+					else{
+						loadModels(
+							snapshot.val().url,
+							parseFloat(snapshot.val().px),
+							parseFloat(snapshot.val().py),
+							parseFloat(snapshot.val().pz),
+							parseFloat(snapshot.val().qx),
+							parseFloat(snapshot.val().qy),
+							parseFloat(snapshot.val().qz),
+							parseFloat(snapshot.val().qw),
+							parseFloat(snapshot.val().sx),
+							parseFloat(snapshot.val().sy),
+							parseFloat(snapshot.val().sz),
+							snapshot.val().modelName
+						); 
+					}
+
+					//for updating arrowcount on client side
+					if(snapshot.val().nextArrowCount){
+						
+						arrowCounter = snapshot.val().nextArrowCount;
+						
+					}
+
+
+         });
+
+				database.ref('rooms/'+room).on('child_removed',snapshot =>{
+				
+					console.log("-----------client removing model-------------");
+					console.log(snapshot.val());
+					deleteModels(snapshot.val().modelName);
+					if (snapshot.val().status) {
+						var delVideoElem = document.getElementById(snapshot.val().modelName);
+						delVideoElem.remove();
+					}
+				});
+
+				database.ref('rooms/'+room).on('child_changed',snapshot =>{
+        
+						console.log("-----------client changing model-------------");
+						console.log(snapshot.val());
+						if (snapshot.val().status) {
+
+							if (snapshot.val().status == "true") {
+								var selectedVideoElem = document.getElementById(snapshot.val().modelName);
+								selectedVideoElem.play();
+							}
+							else if (snapshot.val().status == "false") {
+								var selectedVideoElem = document.getElementById(snapshot.val().modelName);
+								selectedVideoElem.pause();
+							}
+
+					}
+					if (snapshot.val().paging == "true") {
+						pageNum = snapshot.val().currentPage;
+						renderPage(snapshot.val().modelName, snapshot.val().currentPage);
+						database.ref('rooms/' + room + '/' + snapshot.val().modelName).update({ paging: "false" });
+					}
+					receiveTransformModel(
+                              parseFloat(snapshot.val().px), 
+                              parseFloat(snapshot.val().py), 
+                              parseFloat(snapshot.val().pz), 
+                              parseFloat(snapshot.val().qx), 
+                              parseFloat(snapshot.val().qy), 
+                              parseFloat(snapshot.val().qz),
+                              parseFloat(snapshot.val().qw),  
+                              parseFloat(snapshot.val().sx), 
+                              parseFloat(snapshot.val().sy), 
+                              parseFloat(snapshot.val().sz), 
+                              snapshot.val().modelName
+                              );
+					});
+    
+
+			}
+
+			function firebaseConfigure() {
+				firebase.initializeApp(firebaseConfig);
+				database = firebase.database();
+				firebase.auth().onAuthStateChanged(function (user) {
+					if (user) {
+						// User is signed in.
+						displayName = user.displayName;
+						var email = user.email;
+						var emailVerified = user.emailVerified;
+						photoURL = user.photoURL;
+						var isAnonymous = user.isAnonymous;
+						uid_firebase = user.uid;
+						var providerData = user.providerData;
+						connect();
+						//initializeAgora();
+					}
+					else {
+						console.log("user not logged in");
+					}
+				});
+			}
+			
+			function addView(id, show) {
+				if (!$("#" + id)[0]) {
+					$("<div/>", {
+					id: "remote_video_panel_" + id,
+					class: "video-view",
+					}).appendTo("#video");
+					$("<div/>", {
+					id: "remote_video_" + id,
+					class: "video-placeholder",
+					}).appendTo("#remote_video_panel_" + id);
+					$("<div/>", {
+					id: "remote_video_info_" + id,
+					class: "video-profile " + (show ? "" : "hide"),
+					}).appendTo("#remote_video_panel_" + id);
+					$("<div/>", {
+					id: "video_autoplay_" + id,
+					class: "autoplay-fallback hide",
+					}).appendTo("#remote_video_panel_" + id);
+				}
+			}
+
+			function removeView(id) {
+				if ($("#remote_video_panel_" + id)[0]) {
+					$("#remote_video_panel_" + id).remove();
+				}
+			}
+			
+		</script>
+	</body>
+</html>

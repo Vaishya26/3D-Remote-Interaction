@@ -1,0 +1,229 @@
+<!--- Modified code --->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Dashboard</title>
+	<link rel="stylesheet" href="/css/admin.dashboard.css" />
+	<link rel="stylesheet" href="/sweetalert2/sweetalert2.css" />
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+		integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+</head>
+
+<body>
+	<div id="body">
+		<div class="overlay">
+			<div style="position: relative" class="">
+				<ul id="slide-out" class="sidenav sidenav-fixed">
+					<li class="logo">
+						<a class="navbar-brand" href="#">
+							<img src="/images/Group 245.svg" alt="" />
+						</a>
+					</li>
+					<li style="height: 5%"></li>
+
+					<li>
+						<a class="waves-effect waves-teal flex" href="/dashboard">
+							<div class="flex-sidenav">
+								<div class="sidenav-icon">
+									<img class="sidenav-icon-img" src="/images/Path 222.svg" />
+								</div>
+								<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px;">Home</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="waves-effect waves-teal flex checked" href="#!">
+							<div class="flex-sidenav">
+								<div class="sidenav-icon">
+									<img class="sidenav-icon-img" src="/images/Group 141.svg" />
+								</div>
+								<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px;">Admin</div>
+							</div>
+						</a>
+					</li>
+					<div class="log-out">
+						<a class="logout-btn" href="/logout">
+							<div class="logout-btn2" >
+								<div class="sidenav-icon">
+									<img class="logoutimage" style="position: relative; right: 40px; top: 28px;"  src="/images/logout.png"  />
+								</div>
+								<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px; color: black;">Logout</div>
+							</div>
+						</a>
+					</div>
+					<div style="width: 100%" class="flex center">
+						<div class="waves-effect waves-light cbtn need-help">
+							Need Help?
+						</div>
+					</div>
+					
+					<!---
+					<li>
+						<a class="waves-effect waves-teal flex" href="#!">
+							<div class="flex-sidenav">
+								<div class="sidenav-icon">
+									<img class="sidenav-icon-img" src="/images/Path 229.svg" />
+								</div>
+								<div class="sidenav-text" style="font-family: 'Open sans',sans-serif; font-size: 18px;">Settings</div>
+							</div>
+						</a>
+					</li>
+					--->
+					
+				</ul>
+			</div>
+			<div class="body">
+				<nav class="navbar">
+					<div class="container-fluid evenly">
+						<div style="width: 35%; justify-content: flex-start" class="component">
+							<!-- style="width: 40%" -->
+							<div class="nav-wrapper" style="width: 100%">
+								<form>
+									<div class="input-field" style="width: 100%">
+										<input id="search1" style="width: 100%" type="search"
+											placeholder="Search by date & Oraganization name" />
+										<label class="label-icon" for="search1">
+											<i class="material-icons">search</i>
+										</label>
+										<i class="material-icons">close</i>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="component waves-effect acc" style="margin-right: 30px">
+							<div class="flex account">
+								<div class="account-logo">
+									<div class="logo-acc"></div>
+								</div>
+								<div class="name-postion-tag flex">
+									<div class="name" style="font-family: 'Open sans',sans-serif; font-weight: 200;"></div>
+									<div class="position"></div>
+								</div>
+								<div class="drop-arrow">
+									<img src="/images/arrow.svg" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</nav>
+				<div style="display: flex; margin: 2.5%; justify-content: space-between">
+					<div class="dashboard">
+						<div class="dashboard-header">
+							<div class="dashboard-header-text-title-text" style=" font-family: 'Poppins', sans-serif; font-size: 28px;">Dashboard</div>
+						</div>
+						<div class="member-title-bar">
+							<div class="member-title-text" style=" color:dark gray ;font-weight: 200;" >Members</div>
+							<a class="waves-effect waves-light cbtn modal-trigger" href="#modal1" style="font-size: 14px; font-weight: 500; position: relative; top:3px ">
+								Add new Members
+							</a>
+							<div id="modal1" class="modal">
+								<div class="modal-content">
+									<h4 class="model-title" >Add new Member</h4>
+									<div class="input-field col s12">
+										<input id="userName" type="text" class="validate" />
+										<label for="name" placeholder="Name">Name</label>
+									</div>
+									<div class="input-field col s12">
+										<input id="userEmail" type="email" class="validate" />
+										<label for="email" placeholder="email">Email</label>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<a href="javascript:void(0)" id="addClientUserBtn" class="modal-close waves-effect waves-light cbtn"
+										style="width: 25%">Add User</a>
+								</div>
+							</div>
+						</div>
+						<div class="member-list">
+							<ul class="ml-ul">
+								<!-- Company members will be added dynamically here -->
+							</ul>
+						</div>
+					</div>
+
+					<div class="storage">
+						<div class="storage-title">Storage</div>
+						<div class="time-analog" id="time-analog" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="0"
+							style="--value: calc(0 / 1 * 100); --final: 0"></div>
+						<div class="storage-title">Seats</div>
+						<div class="seats">
+							<img src="/images/Groups.svg" alt="" />
+						</div>
+						<div class="counts">
+							<div class="part">6</div>
+							<div class="by">/</div>
+							<div class="total">12</div>
+						</div>
+						<div class="storage-title" style="font-size: 14px;">Call time left</div>
+						<!-- <div class="time">
+                <div class="hours">
+                  <div class="hours-title">Hours</div>
+                  <div class="hours-value">
+                    <div class="h value-num">0</div>
+                    <div class="h value-num">6</div>
+                    <div class="h value-num">0</div>
+                  </div>
+                </div>
+                <div class="colon">
+                  <div class="circle"></div>
+                  <div class="circle"></div>
+                </div>
+                <div class="mins">
+                  <div class="mins-title">Minitus</div>
+                  <div class="mins-value">
+                    <div class="m value-num">0</div>
+                    <div class="m value-num">6</div>
+                  </div>
+                </div>
+              </div> -->
+						<div class="time-">
+							<div class="time-clock">
+								<div class="ana-body">
+									<div class="ana" role="progressbar" aria-valuenow="20" aria-valuemin="0"
+										aria-valuemax="100" style="--value: calc(20 / 100 * 100); --final: 20"></div>
+								</div>
+							</div>
+							<div class="time-clock-text">
+								<div class="time-num" style="line-height: normal;">19560</div>
+								<div class="time-num-text" style="font-size: 10px; position: relative; bottom: 8px">Minutes</div>
+							</div>
+						</div>
+						<div class="waves-effect waves-light cbtn upgd" style="font-size: 14px;">Upgrade</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Custom Progress bar 
+      <div class="storage-marker">
+      <div class="square"></div>
+      <div class="ocircle"></div>
+      <div class="circle"></div>
+      <div class="progressbar"></div>
+      <div class="progressbar-cover"></div>
+      <div class="progressbar-cover fixed"></div>
+      <div class="progressbar-cover white"></div>
+    </div> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+		integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-storage.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc"></script>
+	
+	<script src="./js/firebase-config.js"></script>
+	<script src="/sweetalert2/sweetalert2.js"></script>
+	<script src="/js/companyAdminDashboard.js"></script>
+</body>
+
+</html>

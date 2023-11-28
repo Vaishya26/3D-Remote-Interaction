@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>AjnaSuite-Support</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<%- include('styleScripts.ejs') %>
+
+		<!-- Custom CSS -->
+		<!-- <link rel="stylesheet" href="main.css" /> -->
+		<link rel="stylesheet" href="/css/homepage.css" />
+		<link rel="stylesheet" href="/css/supportPage.css" />
+		<link rel="stylesheet" href="../sweetalert2/sweetalert2.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css"
+			integrity="sha512-EZSUkJWTjzDlspOoPSpUFR0o0Xy7jdzW//6qhUkoZ9c4StFkVsp9fbbd0O06p9ELS3H486m4wmrCELjza4JEog=="
+			crossorigin="anonymous" />
+
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+			<a class="navbar-brand" href="#">
+				<h2><b>AjnaSuite</b></h2>
+			</a>
+			<div id="tour-fullwidth" class="navbar-btn" style="display: none;">
+				<button type="button" class="btn-toggle-fullwidth"><i class="fas fa-chevron-circle-right"></i></button>
+			</div>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+				</ul>
+				<form class="form-inline my-2 my-lg-0">
+					<!-- <input class="mr-sm-2 navbar-search" type="search" placeholder="Search"
+aria-label="Search"> -->
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<img src="images/user2.png" id="user_img" class="img-responsive img-circle" alt="Avatar" height="45px"
+							width="45px">
+					</a>
+					<ul class="dropdown-menu logged-user-menu list-justify">
+						<li>Name : <span id="user-info-name"> <b></b></span></li>
+						<li>Team : <span id="user-info-group"> <b>AjnaLens</b></span></li>
+						<li>Email : <span id="user-info-email"> <b></b></span></li>
+						<li style="text-align: center;"><button type="button" class="btn btn-sm"
+								id="editProfBtn">Edit</button></li>
+						<!-- <li>Gender : <span><b> Male</b></span></li> -->
+					</ul>
+				</form>
+
+			</div>
+		</nav>
+
+		<!-- LEFT SIDEBAR -->
+		<div id="sidebar-nav" class="sidebar">
+			<!-- <div class="collapse navbar-collapse" id="sidenavbarSupportedContent"> -->
+			<nav>
+				<ul class="nav" id="sidebar-nav-menu">
+					<div class="col-md-12" id="homepageDiv">
+						<li><i class="fas fa-lg fa-home"></i> <b>Home</b></li>
+					</div>
+					<div class="col-md-12">
+						<li><i class="fas fa-lg fa-network-wired"></i> <b>Integration</b></li>
+					</div>
+					<div class="col-md-12">
+						<li><i class="fas fa-lg fa-cog"></i> <b>Settings</b></li>
+					</div>
+					<div class="col-md-12" id="releasesDiv">
+						<li><i class="fas fa-lg fa-code-branch"></i> <b>Releases</b></li>
+					</div>
+					<div class="col-md-12" id="updateFormDiv" style="display: none;">
+						<li><i class="fas fa-lg fa-file-code"></i> <b>Push Update</b></li>
+					</div>
+					<div class="col-md-12" id="supportDiv">
+						<li><i class="fas fa-lg fa-headset"></i> <b>Support</b></li>
+					</div>
+					<div class="col-md-12" id="editorDiv">
+						<li><i class="fas fa-lg fa-binoculars"></i> <b>Scene Editor</b></li>
+					</div>
+				</ul>
+				<div class="bottom-nav-menu">
+					<hr>
+					<ul class="nav" id="sidebar-nav-menu-bottom">
+						<div class="col-md-12">
+							<li> <b>About</b></li>
+						</div>
+						<div class="col-md-12">
+							<li> <b>Help</b></li>
+						</div>
+						<div class="col-md-12" id="logoutDiv">
+							<li> <b>Logout</b></li>
+						</div>
+					</ul>
+				</div>
+			</nav>
+			<!-- </div> -->
+		</div>
+		<!-- END LEFT SIDEBAR -->
+
+		<div class="main">
+			<div class="main-content">
+				<div class="content-heading clearfix">
+					<h2><span>Support</span></h2>
+				</div>
+				<div class="col-md-9">
+					<div class="panel panel-scrolling">
+						<div class="panel-heading" style="display: none;">
+							<div class="row heading-controls">
+								<div class="col-xs-8" style="margin: auto;">
+									<button type="button" class="btn btn-primary" data-toggle="modal"
+										data-target="#modalRaiseTicket">
+										Raise ticket <i class="fas fa-ticket-alt"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<ul class="list-unstyled list-contacts" id="queryList">
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- RaiseTicketModal -->
+	<div class="modal fade" id="modalRaiseTicket" tabindex="-1" role="dialog" aria-labelledby="CreateModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content homepageModal">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalCreateTitle">Ticket</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<form id="raiseTicketForm">
+							<div class="form-group">
+								<label for="ticket-subject" class="control-label">Subject</label>
+								<input type="text" class="form-control" name="ticket-subject" id="ticket-subject"
+									placeholder="Subject">
+							</div>
+							<div class="form-group">
+								<label for="ticket-message" class="control-label">Message</label>
+								<textarea class="form-control" name="ticket-message" id="ticket-message" rows="5"
+									cols="30" placeholder="Message"></textarea>
+							</div>
+							<div class="form-group">
+								<label class="control-label">Attach File</label>
+								<input id="file-inp" type="file" class="form-control dropify"
+									data-allowed-file-extensions="jpg png">
+								<p class="help-block">
+									<em>Valid file type: .jpg, .png.</em>
+								</p>
+							</div>
+							<div class="form-group">
+								<button type="button" id="raiseTicketSubmitBtn" class="btn homepageBtn btn-block">Submit
+									Ticket</button>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- TicketSolutionModal -->
+	<div class="modal fade" id="modalTicketSolution" tabindex="-1" role="dialog"
+		aria-labelledby="CreateModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content homepageModal">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalCreateTitle">Ticket</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<fieldset>
+								<legend>Query</legend>
+								<h5 id="smQuerySubj"></h5>
+								<p id="smQueryMsg"></p>
+								<div class="query-img">
+									<img id="smQueryImg"
+										src=""
+										alt="" srcset="">
+								</div>
+							</fieldset>
+						</div>
+						<hr>
+						<div class="row">
+							<fieldset>
+								<legend>Solution</legend>
+								<p id="smSolutionMsg"></p>
+								<div class="query-img">
+									<img id="smSolutionImg"
+										src=""
+										alt="" srcset="">
+								</div>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- GiveSolutionModal -->
+	<div class="modal fade" id="modalGiveSolution" tabindex="-1" role="dialog" aria-labelledby="CreateModalCenterTitle"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content homepageModal">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalCreateTitle">Ticket</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<fieldset>
+								<legend>Query</legend>
+								<h5 id="rmQuerySubj"></h5>
+								<p id="rmQueryMsg"></p>
+								<div class="query-img">
+									<img id="rmQueryImg"
+										src=""
+										alt="" srcset="">
+								</div>
+							</fieldset>
+						</div>
+						<hr>
+						<div class="row">
+							<fieldset>
+								<form id="resolveForm">
+									<legend>Solution</legend>
+									<div class="form-group">
+										<label for="ticket-message" class="control-label">Message</label>
+										<textarea class="form-control" name="ticket-message" id="solution-message" rows="5"
+											cols="30" placeholder="Message"></textarea>
+									</div>
+									<div class="form-group">
+										<label for="ticket-attachment" class=" control-label">Attach File</label>
+										<input id="soln-file-inp" type="file" class="form-control dropify">
+										<p class="help-block">
+											<em>Valid file type: .jpg, .png, .txt, .pdf. File size max: 1 MB</em>
+										</p>
+									</div>
+									<div class="form-group">
+										<button type="button" id="resolveFormSubmitBtn" class="btn homepageBtn btn-block">Submit Solution</button>
+									</div>
+								</form>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Global Variables -->
+	<script src="/js/common.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-storage.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+	<script src="./js/firebase-config.js"></script>
+	<!-- JQuery & Bootstrap Dependency -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"
+		integrity="sha512-8QFTrG0oeOiyWo/VM9Y8kgxdlCryqhIxVeRpWSezdRRAvarxVtwLnGroJgnVW9/XBRduxO/z1GblzPrMQoeuew=="
+		crossorigin="anonymous"></script>
+	<script src="../sweetalert2/sweetalert2.js"></script>
+	<script src="/js/support_page_script.js"></script>
+
+</body>
+
+</html>
