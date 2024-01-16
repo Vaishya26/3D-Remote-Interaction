@@ -74,10 +74,9 @@ npm
 
 1. Go to URL(https://cs5337.web.app)
    ```sh
-   Use Pre Uploaded Models by clicking on Add button from Library.
-   After Model gets loaded inside the scene, Click anywhere on the Model and use Translate, Rotate, Scale, Delete button to interact with the Model.
-   Try to Load multiple Models Simultaneously.
-   Try to Upload Models (GLTF/GLB) Files by clicking on Upload Button.
+   Sign Up and Login by clicking on sign up link.
+   Create a Room with credentails and join the room.
+   Try to Upload Models (GLTF/GLB), Videos, Images, PDF files by clicking on Upload Button.
    ```
 2. To Move around and Interact with the scene.
    ```sh

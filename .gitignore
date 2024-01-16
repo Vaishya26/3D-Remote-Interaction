@@ -66,3 +66,6 @@ node_modules/
 
 # klorofil template
 HTML5_version/*
+
+#Google Cloud Credentials
+serviceAccountKey.json
