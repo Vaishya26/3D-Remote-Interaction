@@ -70,7 +70,22 @@ npm
    firebase deploy -m "Deployment Tag"
    ```
 
-_For more examples related to usgae, please refer to the [Firebase Docs](https://firebase.google.com/docs/cli)_
+## Usage (From Deployed URL)
+
+1. Go to URL(https://cs5337.web.app)
+   ```sh
+   Use Pre Uploaded Models by clicking on Add button from Library.
+   After Model gets loaded inside the scene, Click anywhere on the Model and use Translate, Rotate, Scale, Delete button to interact with the Model.
+   Try to Load multiple Models Simultaneously.
+   Try to Upload Models (GLTF/GLB) Files by clicking on Upload Button.
+   ```
+2. To Move around and Interact with the scene.
+   ```sh
+   Use Arrow Keys to move around the 3D Scene.
+   Clicking mouse down with mouse Left Key and dragging the mouse helps to turn around from single point.
+   ```
+3. Demo Video for understanding usage.
+   ![](functions/public/videos/demoScene.gif)
 
 
 <!-- LICENSE -->
